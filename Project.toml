@@ -1,7 +1,7 @@
 name = "GeoStatsVizTests"
 uuid = "5b37fad0-31e4-4893-a89e-50493f0a373d"
 authors = ["Elias Carvalho <eliascarvdev@gmail.com> and contributors"]
-version = "1.0.0-DEV"
+version = "1.0.0"
 
 [compat]
 julia = "1.9"

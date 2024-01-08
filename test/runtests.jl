@@ -279,20 +279,6 @@ datadir = joinpath(@__DIR__, "data")
     @test_reference joinpath(datadir, "vol3D-6.png") viz(m, color=1:ne, alpha=0.5)
     @test_reference joinpath(datadir, "vol3D-7.png") viz(m, color=1:ne, alpha=range(0.1, 1.0, length=ne))
 
-    # # 2D partitions
-    # Random.seed!(2020)
-    # g = CartesianGrid(10, 10)
-    # p = partition(g, PlanePartition((1.0, 1.0)))
-    # @test_reference joinpath(datadir, "part2D-1.png") viz(p)
-    # @test_reference joinpath(datadir, "part2D-2.png") viz(p, alpha=0.2)
-
-    # # 3D partitions
-    # Random.seed!(2020)
-    # g = CartesianGrid(10, 10, 10)
-    # p = partition(g, PlanePartition((1.0, 1.0, 1.0)))
-    # @test_reference joinpath(datadir, "part3D-1.png") viz(p)
-    # @test_reference joinpath(datadir, "part3D-2.png") viz(p, alpha=0.5)
-
     # vector of points
     p = Point2[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)]
     @test_reference joinpath(datadir, "points2D-1.png") viz(p)

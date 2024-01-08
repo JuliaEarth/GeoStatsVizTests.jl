@@ -1,12 +1,18 @@
 using GeoStatsVizTests
-using ReferenceTests
+using GeoTables
 using Meshes
+using Distributions
+using Unitful
+using Colors
+using ReferenceTests
 using Random
 using Test
 
 import CairoMakie as Mke
 
 datadir = joinpath(@__DIR__, "data")
+
+rng = MersenneTwister(2)
 
 @testset "GeoStatsVizTests.jl" begin
   @testset "viz" begin
@@ -358,5 +364,102 @@ datadir = joinpath(@__DIR__, "data")
     d = CartesianGrid(2, 2)
     c = [1.0, NaN, 3.0, NaN]
     @test_reference joinpath(datadir, "missing-2.png") viz(d, color=c)
+  end
+
+  @testset "viewer" begin
+    grid = CartesianGrid(10, 10)
+
+    # continuous variables
+    a = rand(rng, 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-continuous.png") viewer(gtb)
+
+    # categorical variables
+    a = rand(rng, 1:5, 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-categorical-1.png") viewer(gtb)
+    a = rand(rng, ["yes", "no"], 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-categorical-2.png") viewer(gtb)
+
+    # distributional variables
+    a = Normal.(rand(rng, 100), rand(rng, 100))
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-distributional.png") viewer(gtb)
+
+    # colors
+    a = Gray.(rand(rng, 100))
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-colors.png") viewer(gtb)
+
+    # constant columns
+    # continuous
+    a = fill(1.0, 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-const-continuous.png") viewer(gtb)
+    # categorical
+    a = fill("test", 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-const-categorical.png") viewer(gtb)
+    # distributional
+    a = fill(Normal(), 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-const-distributional.png") viewer(gtb)
+    # color
+    a = fill(Gray(0.1), 100)
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-const-color.png") viewer(gtb)
+
+    # missing values
+    missings = fill(missing, 20)
+    # continuous with missing
+    a = shuffle(rng, [missings; rand(rng, 80)])
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-missing-continuous-1.png") viewer(gtb)
+    # continuous with NaN
+    a = shuffle(rng, [fill(NaN, 20); rand(rng, 80)])
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-missing-continuous-2.png") viewer(gtb)
+    # continuous with missing and NaN
+    a = shuffle(rng, [fill(missing, 10); fill(NaN, 10); rand(rng, 80)])
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-missing-continuous-3.png") viewer(gtb)
+    # categorical
+    a = shuffle(rng, [missings; rand(rng, 'a':'e', 80)])
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-missing-categorical.png") viewer(gtb)
+    # distributional
+    a = shuffle(rng, [missings; Normal.(rand(rng, 80), rand(rng, 80))])
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-missing-distributional.png") viewer(gtb)
+    # colors
+    a = shuffle(rng, [missings; RGB.(rand(rng, 80), rand(rng, 80), rand(rng, 80))])
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-missing-colors.png") viewer(gtb)
+
+    # units
+    # continuous
+    a = rand(rng, 100) * u"m/s"
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-unit-continuous.png") viewer(gtb)
+    # categorical
+    a = rand(rng, 1:5, 100) * u"°C"
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-unit-categorical.png") viewer(gtb)
+    # continuous with missing
+    a = shuffle(rng, [missings; rand(rng, 80)]) * u"m/s"
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-unit-missing-continuous.png") viewer(gtb)
+    # categorical with missing
+    a = shuffle(rng, [missings; rand(rng, 1:5, 80)]) * u"°C"
+    gtb = georef((; a), grid)
+    @test_reference joinpath(datadir, "viewer-unit-missing-categorical.png") viewer(gtb)
+
+    # error: could not find viewable variables
+    a = fill(missing, 100) # all missing values
+    b = fill(NaN, 100) # all missing values
+    c = fill(nothing, 100) # Unknown scitype
+    gtb = georef((; a, b, c), grid)
+    @test_throws AssertionError viewer(gtb)
   end
 end

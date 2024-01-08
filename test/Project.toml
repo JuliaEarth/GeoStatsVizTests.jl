@@ -1,10 +1,13 @@
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+Colors = "5ae59095-9a9b-59fe-a467-6f913c188581"
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+GeoTables = "e502b557-6362-48c1-8219-d30d308dcdb0"
 Meshes = "eacbb407-ea5a-433e-ab97-5258b1ca43fa"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 ReferenceTests = "324d217c-45ce-50fc-942e-d289b448e8cf"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 CairoMakie = "0.11"
-Meshes = "0.39"

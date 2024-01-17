@@ -365,7 +365,12 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "reactilineargrid2D-3.png") viz(g, color=1:25, colorscheme=:inferno)
     @test_reference joinpath(datadir, "reactilineargrid2D-4.png") viz(g, color=:red, alpha=0.5, showfacets=true)
     @test_reference joinpath(datadir, "reactilineargrid2D-5.png") viz(g, color=1:25, showfacets=true, facetcolor=:red)
-    @test_reference joinpath(datadir, "reactilineargrid2D-6.png") viz(g, showfacets=true, facetcolor=:red, segmentsize=5)
+    @test_reference joinpath(datadir, "reactilineargrid2D-6.png") viz(
+      g,
+      showfacets=true,
+      facetcolor=:red,
+      segmentsize=5
+    )
 
     # structured grid
     X = [i / 20 * cos(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]

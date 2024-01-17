@@ -356,6 +356,28 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "meshview3D-2.png") viz(v, color=1:500)
     @test_reference joinpath(datadir, "meshview3D-3.png") viz(v, color=1:500, colorscheme=:inferno)
 
+    # reactilinear grid
+    x = 0:0.2:1
+    y = [0.0, 0.1, 0.3, 0.7, 0.9, 1.0]
+    g = RectilinearGrid(x, y)
+    @test_reference joinpath(datadir, "reactilineargrid2D-1.png") viz(g, showfacets=true)
+    @test_reference joinpath(datadir, "reactilineargrid2D-2.png") viz(g, showfacets=true, facetcolor=:red)
+    @test_reference joinpath(datadir, "reactilineargrid2D-3.png") viz(g, color=1:25, colorscheme=:inferno)
+    @test_reference joinpath(datadir, "reactilineargrid2D-4.png") viz(g, color=:red, alpha=0.5, showfacets=true)
+    @test_reference joinpath(datadir, "reactilineargrid2D-5.png") viz(g, color=1:25, showfacets=true, facetcolor=:red)
+    @test_reference joinpath(datadir, "reactilineargrid2D-6.png") viz(g, showfacets=true, facetcolor=:red, segmentsize=5)
+
+    # structured grid
+    X = [i / 20 * cos(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]
+    Y = [i / 20 * sin(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]
+    g = StructuredGrid(X, Y)
+    @test_reference joinpath(datadir, "structuredgrid2D-1.png") viz(g, showfacets=true)
+    @test_reference joinpath(datadir, "structuredgrid2D-2.png") viz(g, showfacets=true, facetcolor=:red)
+    @test_reference joinpath(datadir, "structuredgrid2D-3.png") viz(g, color=1:551, colorscheme=:inferno)
+    @test_reference joinpath(datadir, "structuredgrid2D-4.png") viz(g, color=:red, alpha=0.5, showfacets=true)
+    @test_reference joinpath(datadir, "structuredgrid2D-5.png") viz(g, color=1:551, showfacets=true, facetcolor=:red)
+    @test_reference joinpath(datadir, "structuredgrid2D-6.png") viz(g, showfacets=true, facetcolor=:red, segmentsize=5)
+
     # missing values
     rng = MersenneTwister(123)
     d = CartesianGrid(2, 2)

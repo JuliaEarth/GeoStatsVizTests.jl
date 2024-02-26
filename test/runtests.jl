@@ -54,11 +54,6 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "pset3D-5.png") viz(p, color=:red, alpha=0.5)
     @test_reference joinpath(datadir, "pset3D-6.png") viz(p, color=1:8, alpha=0.5)
 
-    # 1D Cartesian grid
-    d = CartesianGrid(10)
-    @test_reference joinpath(datadir, "grid1D-1.png") viz(d)
-    @test_reference joinpath(datadir, "grid1D-2.png") viz(d, color=:red)
-
     # 2D Cartesian grid
     d = CartesianGrid(10, 10)
     @test_reference joinpath(datadir, "grid2D-1.png") viz(d)

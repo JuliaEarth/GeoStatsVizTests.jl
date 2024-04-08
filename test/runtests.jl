@@ -359,7 +359,12 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "reactilineargrid2D-2.png") viz(g, showsegments=true, segmentcolor=:red)
     @test_reference joinpath(datadir, "reactilineargrid2D-3.png") viz(g, color=1:25, colormap=:inferno)
     @test_reference joinpath(datadir, "reactilineargrid2D-4.png") viz(g, color=:red, alpha=0.5, showsegments=true)
-    @test_reference joinpath(datadir, "reactilineargrid2D-5.png") viz(g, color=1:25, showsegments=true, segmentcolor=:red)
+    @test_reference joinpath(datadir, "reactilineargrid2D-5.png") viz(
+      g,
+      color=1:25,
+      showsegments=true,
+      segmentcolor=:red
+    )
     @test_reference joinpath(datadir, "reactilineargrid2D-6.png") viz(
       g,
       showsegments=true,
@@ -375,8 +380,18 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "structuredgrid2D-2.png") viz(g, showsegments=true, segmentcolor=:red)
     @test_reference joinpath(datadir, "structuredgrid2D-3.png") viz(g, color=1:551, colormap=:inferno)
     @test_reference joinpath(datadir, "structuredgrid2D-4.png") viz(g, color=:red, alpha=0.5, showsegments=true)
-    @test_reference joinpath(datadir, "structuredgrid2D-5.png") viz(g, color=1:551, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "structuredgrid2D-6.png") viz(g, showsegments=true, segmentcolor=:red, segmentsize=5)
+    @test_reference joinpath(datadir, "structuredgrid2D-5.png") viz(
+      g,
+      color=1:551,
+      showsegments=true,
+      segmentcolor=:red
+    )
+    @test_reference joinpath(datadir, "structuredgrid2D-6.png") viz(
+      g,
+      showsegments=true,
+      segmentcolor=:red,
+      segmentsize=5
+    )
 
     # missing values
     rng = MersenneTwister(123)

@@ -26,18 +26,16 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "pset2D-6.png") viz(p, color=1:4, alpha=0.5)
 
     # 3D point set
-    p = PointSet(
-      [
-        (0.0, 0.0, 0.0),
-        (1.0, 0.0, 0.0),
-        (1.0, 1.0, 0.0),
-        (0.0, 1.0, 0.0),
-        (0.0, 0.0, 1.0),
-        (1.0, 0.0, 1.0),
-        (1.0, 1.0, 1.0),
-        (0.0, 1.0, 1.0)
-      ]
-    )
+    p = PointSet([
+      (0.0, 0.0, 0.0),
+      (1.0, 0.0, 0.0),
+      (1.0, 1.0, 0.0),
+      (0.0, 1.0, 0.0),
+      (0.0, 0.0, 1.0),
+      (1.0, 0.0, 1.0),
+      (1.0, 1.0, 1.0),
+      (0.0, 1.0, 1.0)
+    ])
     @test_reference joinpath(datadir, "pset3D-1.png") viz(p)
     @test_reference joinpath(datadir, "pset3D-2.png") viz(p, color=:red)
     @test_reference joinpath(datadir, "pset3D-3.png") viz(p, color=1:8)

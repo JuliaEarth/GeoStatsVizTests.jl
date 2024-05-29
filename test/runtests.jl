@@ -16,17 +16,8 @@ rng = MersenneTwister(2)
 
 @testset "GeoStatsVizTests.jl" begin
   @testset "viz" begin
-    # 1D point set
-    p = PointSet(Point1[(0.0,), (1.0,), (2.0,), (3.0,)])
-    @test_reference joinpath(datadir, "pset1D-1.png") viz(p)
-    @test_reference joinpath(datadir, "pset1D-2.png") viz(p, color=:red)
-    @test_reference joinpath(datadir, "pset1D-3.png") viz(p, color=1:4)
-    @test_reference joinpath(datadir, "pset1D-4.png") viz(p, color=1:4, colormap=:inferno)
-    @test_reference joinpath(datadir, "pset1D-5.png") viz(p, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "pset1D-6.png") viz(p, color=1:4, alpha=0.5)
-
     # 2D point set
-    p = PointSet(Point2[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
+    p = PointSet([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
     @test_reference joinpath(datadir, "pset2D-1.png") viz(p)
     @test_reference joinpath(datadir, "pset2D-2.png") viz(p, color=:red)
     @test_reference joinpath(datadir, "pset2D-3.png") viz(p, color=1:4)
@@ -36,7 +27,7 @@ rng = MersenneTwister(2)
 
     # 3D point set
     p = PointSet(
-      Point3[
+      [
         (0.0, 0.0, 0.0),
         (1.0, 0.0, 0.0),
         (1.0, 1.0, 0.0),
@@ -281,7 +272,7 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "vol3D-7.png") viz(m, color=1:ne, alpha=range(0.1, 1.0, length=ne))
 
     # vector of points
-    p = Point2[(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)]
+    p = Point.([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
     @test_reference joinpath(datadir, "points2D-1.png") viz(p)
     @test_reference joinpath(datadir, "points2D-2.png") viz(p, color=1:4)
     @test_reference joinpath(datadir, "points2D-3.png") viz(p, color=1:4, colormap=:inferno)

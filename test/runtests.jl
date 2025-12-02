@@ -1,584 +1,606 @@
-using GeoStatsVizTests
-using GeoTables
-using Meshes
-using Distributions
-using Unitful
-using Colors
-using ReferenceTests
-using Random
-using Test
+using TestItems
+using TestItemRunner
 
-import CairoMakie as Mke
+@run_package_tests
 
-datadir = joinpath(@__DIR__, "data")
+@testsnippet Setup begin
+  using GeoTables
+  using Meshes
+  using Distributions
+  using Unitful
+  using Colors
+  using ReferenceTests
+  using StableRNGs
+  using Random
 
-rng = MersenneTwister(2)
+  import CairoMakie as Mke
 
-@testset "GeoStatsVizTests.jl" begin
-  @testset "viz" begin
-    # 2D point set
-    p = PointSet([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
-    @test_reference joinpath(datadir, "pset2D-1.png") viz(p)
-    @test_reference joinpath(datadir, "pset2D-2.png") viz(p, color=:red)
-    @test_reference joinpath(datadir, "pset2D-3.png") viz(p, color=1:4)
-    @test_reference joinpath(datadir, "pset2D-4.png") viz(p, color=1:4, colormap=:inferno)
-    @test_reference joinpath(datadir, "pset2D-5.png") viz(p, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "pset2D-6.png") viz(p, color=1:4, alpha=0.5)
+  datadir = joinpath(@__DIR__, "data")
+end
 
-    # 3D point set
-    p = PointSet([
-      (0.0, 0.0, 0.0),
-      (1.0, 0.0, 0.0),
-      (1.0, 1.0, 0.0),
-      (0.0, 1.0, 0.0),
-      (0.0, 0.0, 1.0),
-      (1.0, 0.0, 1.0),
-      (1.0, 1.0, 1.0),
-      (0.0, 1.0, 1.0)
-    ])
-    @test_reference joinpath(datadir, "pset3D-1.png") viz(p)
-    @test_reference joinpath(datadir, "pset3D-2.png") viz(p, color=:red)
-    @test_reference joinpath(datadir, "pset3D-3.png") viz(p, color=1:8)
-    @test_reference joinpath(datadir, "pset3D-4.png") viz(p, color=1:8, colormap=:inferno)
-    @test_reference joinpath(datadir, "pset3D-5.png") viz(p, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "pset3D-6.png") viz(p, color=1:8, alpha=0.5)
+@testitem "PointSet" setup = [Setup] begin
+  # 2D point set
+  p = PointSet([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
+  @test_reference joinpath(datadir, "pset2D-1.png") viz(p)
+  @test_reference joinpath(datadir, "pset2D-2.png") viz(p, color=:red)
+  @test_reference joinpath(datadir, "pset2D-3.png") viz(p, color=1:4)
+  @test_reference joinpath(datadir, "pset2D-4.png") viz(p, color=1:4, colormap=:inferno)
+  @test_reference joinpath(datadir, "pset2D-5.png") viz(p, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "pset2D-6.png") viz(p, color=1:4, alpha=0.5)
 
-    # 2D Cartesian grid
-    d = CartesianGrid(10, 10)
-    @test_reference joinpath(datadir, "grid2D-1.png") viz(d)
-    @test_reference joinpath(datadir, "grid2D-2.png") viz(d, showsegments=true)
-    @test_reference joinpath(datadir, "grid2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "grid2D-4.png") viz(d, color=1:100)
-    @test_reference joinpath(datadir, "grid2D-5.png") viz(d, color=1:100, colormap=:inferno)
-    @test_reference joinpath(datadir, "grid2D-6.png") viz(d, color=:red)
-    @test_reference joinpath(datadir, "grid2D-7.png") viz(d, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "grid2D-8.png") viz(d, color=1:100, alpha=0.5)
-    @test_reference joinpath(datadir, "grid2D-9.png") viz(d, color=1:100, showsegments=true)
-    @test_reference joinpath(datadir, "grid2D-10.png") viz(d, color=1:100, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "grid2D-11.png") viz(d, showsegments=true, segmentsize=5)
-    @test_reference joinpath(datadir, "grid2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+  # 3D point set
+  p = PointSet([
+    (0.0, 0.0, 0.0),
+    (1.0, 0.0, 0.0),
+    (1.0, 1.0, 0.0),
+    (0.0, 1.0, 0.0),
+    (0.0, 0.0, 1.0),
+    (1.0, 0.0, 1.0),
+    (1.0, 1.0, 1.0),
+    (0.0, 1.0, 1.0)
+  ])
+  @test_reference joinpath(datadir, "pset3D-1.png") viz(p)
+  @test_reference joinpath(datadir, "pset3D-2.png") viz(p, color=:red)
+  @test_reference joinpath(datadir, "pset3D-3.png") viz(p, color=1:8)
+  @test_reference joinpath(datadir, "pset3D-4.png") viz(p, color=1:8, colormap=:inferno)
+  @test_reference joinpath(datadir, "pset3D-5.png") viz(p, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "pset3D-6.png") viz(p, color=1:8, alpha=0.5)
+end
 
-    # 3D Cartesian grid
-    d = CartesianGrid(10, 10, 10)
-    @test_reference joinpath(datadir, "grid3D-1.png") viz(d)
-    @test_reference joinpath(datadir, "grid3D-2.png") viz(d, showsegments=true)
-    @test_reference joinpath(datadir, "grid3D-3.png") viz(d, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "grid3D-4.png") viz(d, color=1:1000)
-    @test_reference joinpath(datadir, "grid3D-5.png") viz(d, color=1:1000, colormap=:inferno)
-    @test_reference joinpath(datadir, "grid3D-6.png") viz(d, color=:red)
-    @test_reference joinpath(datadir, "grid3D-7.png") viz(d, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "grid3D-8.png") viz(d, color=1:1000, alpha=0.5)
-    @test_reference joinpath(datadir, "grid3D-9.png") viz(d, color=1:1000, showsegments=true)
-    @test_reference joinpath(datadir, "grid3D-10.png") viz(d, color=1:1000, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "grid3D-11.png") viz(d, showsegments=true, segmentsize=5)
-    @test_reference joinpath(datadir, "grid3D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+@testitem "CartesianGrid" setup = [Setup] begin
+  # 2D Cartesian grid
+  d = CartesianGrid(10, 10)
+  @test_reference joinpath(datadir, "grid2D-1.png") viz(d)
+  @test_reference joinpath(datadir, "grid2D-2.png") viz(d, showsegments=true)
+  @test_reference joinpath(datadir, "grid2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "grid2D-4.png") viz(d, color=1:100)
+  @test_reference joinpath(datadir, "grid2D-5.png") viz(d, color=1:100, colormap=:inferno)
+  @test_reference joinpath(datadir, "grid2D-6.png") viz(d, color=:red)
+  @test_reference joinpath(datadir, "grid2D-7.png") viz(d, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "grid2D-8.png") viz(d, color=1:100, alpha=0.5)
+  @test_reference joinpath(datadir, "grid2D-9.png") viz(d, color=1:100, showsegments=true)
+  @test_reference joinpath(datadir, "grid2D-10.png") viz(d, color=1:100, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "grid2D-11.png") viz(d, showsegments=true, segmentsize=5)
+  @test_reference joinpath(datadir, "grid2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
 
-    # 2D simple mesh
-    d = simplexify(CartesianGrid(10, 10))
-    ne = nelements(d)
-    @test_reference joinpath(datadir, "mesh2D-1.png") viz(d)
-    @test_reference joinpath(datadir, "mesh2D-2.png") viz(d, showsegments=true)
-    @test_reference joinpath(datadir, "mesh2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "mesh2D-4.png") viz(d, color=1:ne)
-    @test_reference joinpath(datadir, "mesh2D-5.png") viz(d, color=1:ne, colormap=:inferno)
-    @test_reference joinpath(datadir, "mesh2D-6.png") viz(d, color=:red)
-    @test_reference joinpath(datadir, "mesh2D-7.png") viz(d, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "mesh2D-8.png") viz(d, color=1:ne, alpha=0.5)
-    @test_reference joinpath(datadir, "mesh2D-9.png") viz(d, color=1:ne, showsegments=true)
-    @test_reference joinpath(datadir, "mesh2D-10.png") viz(d, color=1:ne, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "mesh2D-11.png") viz(d, showsegments=true, segmentsize=5)
-    @test_reference joinpath(datadir, "mesh2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+  # 3D Cartesian grid
+  d = CartesianGrid(10, 10, 10)
+  @test_reference joinpath(datadir, "grid3D-1.png") viz(d)
+  @test_reference joinpath(datadir, "grid3D-2.png") viz(d, showsegments=true)
+  @test_reference joinpath(datadir, "grid3D-3.png") viz(d, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "grid3D-4.png") viz(d, color=1:1000)
+  @test_reference joinpath(datadir, "grid3D-5.png") viz(d, color=1:1000, colormap=:inferno)
+  @test_reference joinpath(datadir, "grid3D-6.png") viz(d, color=:red)
+  @test_reference joinpath(datadir, "grid3D-7.png") viz(d, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "grid3D-8.png") viz(d, color=1:1000, alpha=0.5)
+  @test_reference joinpath(datadir, "grid3D-9.png") viz(d, color=1:1000, showsegments=true)
+  @test_reference joinpath(datadir, "grid3D-10.png") viz(d, color=1:1000, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "grid3D-11.png") viz(d, showsegments=true, segmentsize=5)
+  @test_reference joinpath(datadir, "grid3D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+end
 
-    # 2D chain
-    c = Rope((0.0, 0.0), (1.0, 0.5), (1.0, 1.0), (2.0, 0.0))
-    @test_reference joinpath(datadir, "chain2D-1.png") viz(c)
-    @test_reference joinpath(datadir, "chain2D-2.png") viz(c, color=:orange)
-    c = Ring((0.0, 0.0), (1.0, 0.5), (1.0, 1.0), (2.0, 0.0))
-    @test_reference joinpath(datadir, "chain2D-3.png") viz(c)
-    @test_reference joinpath(datadir, "chain2D-4.png") viz(c, color=:orange)
-    @test_reference joinpath(datadir, "chain2D-5.png") viz(c, segmentsize=5)
-    @test_reference joinpath(datadir, "chain2D-6.png") viz(c, color=:orange, segmentsize=5)
-    c = Rope((1.0, 0.5), (1.0, 1.0), (2.0, 0.0), (0.0, 0.0))
-    @test_reference joinpath(datadir, "chain2D-7.png") viz(c, showsegments=true)
-    @test_reference joinpath(datadir, "chain2D-8.png") viz(c, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "chain2D-9.png") viz(c, showsegments=true, pointsize=20)
-    @test_reference joinpath(datadir, "chain2D-10.png") viz(c, showsegments=true, segmentcolor=:red, pointsize=20)
+@testitem "SimpleMesh" setup = [Setup] begin
+  # 2D simple mesh
+  d = simplexify(CartesianGrid(10, 10))
+  ne = nelements(d)
+  @test_reference joinpath(datadir, "mesh2D-1.png") viz(d)
+  @test_reference joinpath(datadir, "mesh2D-2.png") viz(d, showsegments=true)
+  @test_reference joinpath(datadir, "mesh2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "mesh2D-4.png") viz(d, color=1:ne)
+  @test_reference joinpath(datadir, "mesh2D-5.png") viz(d, color=1:ne, colormap=:inferno)
+  @test_reference joinpath(datadir, "mesh2D-6.png") viz(d, color=:red)
+  @test_reference joinpath(datadir, "mesh2D-7.png") viz(d, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "mesh2D-8.png") viz(d, color=1:ne, alpha=0.5)
+  @test_reference joinpath(datadir, "mesh2D-9.png") viz(d, color=1:ne, showsegments=true)
+  @test_reference joinpath(datadir, "mesh2D-10.png") viz(d, color=1:ne, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "mesh2D-11.png") viz(d, showsegments=true, segmentsize=5)
+  @test_reference joinpath(datadir, "mesh2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+end
 
-    # 2D N-gons
-    t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
-    @test_reference joinpath(datadir, "tri2D-1.png") viz(t)
-    @test_reference joinpath(datadir, "tri2D-2.png") viz(t, showsegments=true)
-    @test_reference joinpath(datadir, "tri2D-3.png") viz(t, color=:orange)
-    @test_reference joinpath(datadir, "tri2D-4.png") viz(t, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "tri2D-5.png") viz(t, color=:orange, alpha=0.5)
-    @test_reference joinpath(datadir, "tri2D-6.png") viz(t, showsegments=true, segmentsize=5)
-    @test_reference joinpath(datadir, "tri2D-7.png") viz(t, showsegments=true, segmentcolor=:red, segmentsize=5)
-    q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
-    @test_reference joinpath(datadir, "quad2D-1.png") viz(q)
-    @test_reference joinpath(datadir, "quad2D-2.png") viz(q, showsegments=true)
-    @test_reference joinpath(datadir, "quad2D-3.png") viz(q, color=:orange)
-    @test_reference joinpath(datadir, "quad2D-4.png") viz(q, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "quad2D-5.png") viz(q, color=:orange, alpha=0.5)
-    @test_reference joinpath(datadir, "quad2D-6.png") viz(q, showsegments=true, segmentsize=5)
-    @test_reference joinpath(datadir, "quad2D-7.png") viz(q, showsegments=true, segmentcolor=:red, segmentsize=5)
+@testitem "Chain" setup = [Setup] begin
+  # 2D chain
+  c = Rope((0.0, 0.0), (1.0, 0.5), (1.0, 1.0), (2.0, 0.0))
+  @test_reference joinpath(datadir, "chain2D-1.png") viz(c)
+  @test_reference joinpath(datadir, "chain2D-2.png") viz(c, color=:orange)
+  c = Ring((0.0, 0.0), (1.0, 0.5), (1.0, 1.0), (2.0, 0.0))
+  @test_reference joinpath(datadir, "chain2D-3.png") viz(c)
+  @test_reference joinpath(datadir, "chain2D-4.png") viz(c, color=:orange)
+  @test_reference joinpath(datadir, "chain2D-5.png") viz(c, segmentsize=5)
+  @test_reference joinpath(datadir, "chain2D-6.png") viz(c, color=:orange, segmentsize=5)
+  c = Rope((1.0, 0.5), (1.0, 1.0), (2.0, 0.0), (0.0, 0.0))
+  @test_reference joinpath(datadir, "chain2D-7.png") viz(c, showsegments=true)
+  @test_reference joinpath(datadir, "chain2D-8.png") viz(c, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "chain2D-9.png") viz(c, showsegments=true, pointsize=20)
+  @test_reference joinpath(datadir, "chain2D-10.png") viz(c, showsegments=true, segmentcolor=:red, pointsize=20)
+end
 
-    # 3D N-gons
-    o = Octagon(
-      (0.0, 0.0, 1.0),
-      (0.5, -0.5, 0.0),
-      (1.0, 0.0, 0.0),
-      (1.5, 0.5, -0.5),
-      (1.0, 1.0, 0.0),
-      (0.5, 1.5, 0.0),
-      (0.0, 1.0, 0.0),
-      (-0.5, 0.5, 0.0)
-    )
-    @test_reference joinpath(datadir, "oct3D-1.png") viz(o)
-    @test_reference joinpath(datadir, "oct3D-2.png") viz(o, showsegments=true)
-    @test_reference joinpath(datadir, "oct3D-3.png") viz(o, color=:orange)
-    @test_reference joinpath(datadir, "oct3D-4.png") viz(o, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "oct3D-5.png") viz(o, color=:orange, alpha=0.5)
+@testitem "Polygon" setup = [Setup] begin
+  # 2D N-gons
+  t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
+  @test_reference joinpath(datadir, "tri2D-1.png") viz(t)
+  @test_reference joinpath(datadir, "tri2D-2.png") viz(t, showsegments=true)
+  @test_reference joinpath(datadir, "tri2D-3.png") viz(t, color=:orange)
+  @test_reference joinpath(datadir, "tri2D-4.png") viz(t, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "tri2D-5.png") viz(t, color=:orange, alpha=0.5)
+  @test_reference joinpath(datadir, "tri2D-6.png") viz(t, showsegments=true, segmentsize=5)
+  @test_reference joinpath(datadir, "tri2D-7.png") viz(t, showsegments=true, segmentcolor=:red, segmentsize=5)
+  q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
+  @test_reference joinpath(datadir, "quad2D-1.png") viz(q)
+  @test_reference joinpath(datadir, "quad2D-2.png") viz(q, showsegments=true)
+  @test_reference joinpath(datadir, "quad2D-3.png") viz(q, color=:orange)
+  @test_reference joinpath(datadir, "quad2D-4.png") viz(q, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "quad2D-5.png") viz(q, color=:orange, alpha=0.5)
+  @test_reference joinpath(datadir, "quad2D-6.png") viz(q, showsegments=true, segmentsize=5)
+  @test_reference joinpath(datadir, "quad2D-7.png") viz(q, showsegments=true, segmentcolor=:red, segmentsize=5)
 
-    # Polygonal areas
-    Random.seed!(2020)
-    p = PolyArea((0.0, 0.0), (0.5, -1.5), (1.0, 0.0), (1.5, 0.5), (1.0, 1.0), (0.5, 1.5), (-0.5, 0.5))
-    @test_reference joinpath(datadir, "poly2D-1.png") viz(p)
-    @test_reference joinpath(datadir, "poly2D-2.png") viz(p, showsegments=true)
-    @test_reference joinpath(datadir, "poly2D-3.png") viz(p, color=:orange)
-    @test_reference joinpath(datadir, "poly2D-4.png") viz(p, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "poly2D-5.png") viz(p, color=:orange, alpha=0.5)
+  # 3D N-gons
+  o = Octagon(
+    (0.0, 0.0, 1.0),
+    (0.5, -0.5, 0.0),
+    (1.0, 0.0, 0.0),
+    (1.5, 0.5, -0.5),
+    (1.0, 1.0, 0.0),
+    (0.5, 1.5, 0.0),
+    (0.0, 1.0, 0.0),
+    (-0.5, 0.5, 0.0)
+  )
+  @test_reference joinpath(datadir, "oct3D-1.png") viz(o)
+  @test_reference joinpath(datadir, "oct3D-2.png") viz(o, showsegments=true)
+  @test_reference joinpath(datadir, "oct3D-3.png") viz(o, color=:orange)
+  @test_reference joinpath(datadir, "oct3D-4.png") viz(o, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "oct3D-5.png") viz(o, color=:orange, alpha=0.5)
 
-    # Multi-geometries
-    t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
-    q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
-    m = Multi([t, q])
-    @test_reference joinpath(datadir, "multi2D-1.png") viz(m)
-    @test_reference joinpath(datadir, "multi2D-2.png") viz(m, showsegments=true)
-    @test_reference joinpath(datadir, "multi2D-3.png") viz(m, color=:orange)
-    @test_reference joinpath(datadir, "multi2D-4.png") viz(m, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "multi2D-5.png") viz(m, color=:orange, alpha=0.5)
+  # PolyArea
+  p = PolyArea((0.0, 0.0), (0.5, -1.5), (1.0, 0.0), (1.5, 0.5), (1.0, 1.0), (0.5, 1.5), (-0.5, 0.5))
+  @test_reference joinpath(datadir, "poly2D-1.png") viz(p)
+  @test_reference joinpath(datadir, "poly2D-2.png") viz(p, showsegments=true)
+  @test_reference joinpath(datadir, "poly2D-3.png") viz(p, color=:orange)
+  @test_reference joinpath(datadir, "poly2D-4.png") viz(p, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "poly2D-5.png") viz(p, color=:orange, alpha=0.5)
+end
 
-    # 2D boxes
-    b = Box((0.0, 0.0), (1.0, 1.0))
-    @test_reference joinpath(datadir, "box2D-1.png") viz(b)
-    @test_reference joinpath(datadir, "box2D-2.png") viz(b, showsegments=true)
-    @test_reference joinpath(datadir, "box2D-3.png") viz(b, color=:orange)
-    @test_reference joinpath(datadir, "box2D-4.png") viz(b, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "box2D-5.png") viz(b, color=:orange, alpha=0.5)
+@testitem "Multi" setup = [Setup] begin
+  # Multi-geometries
+  t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
+  q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
+  m = Multi([t, q])
+  @test_reference joinpath(datadir, "multi2D-1.png") viz(m)
+  @test_reference joinpath(datadir, "multi2D-2.png") viz(m, showsegments=true)
+  @test_reference joinpath(datadir, "multi2D-3.png") viz(m, color=:orange)
+  @test_reference joinpath(datadir, "multi2D-4.png") viz(m, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "multi2D-5.png") viz(m, color=:orange, alpha=0.5)
+end
 
-    # 3D boxes
-    b = Box((0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
-    @test_reference joinpath(datadir, "box3D-1.png") viz(b)
-    @test_reference joinpath(datadir, "box3D-2.png") viz(b, color=:orange)
-    @test_reference joinpath(datadir, "box3D-3.png") viz(b, color=:orange, alpha=0.5)
+@testitem "Box" setup = [Setup] begin
+  # 2D boxes
+  b = Box((0.0, 0.0), (1.0, 1.0))
+  @test_reference joinpath(datadir, "box2D-1.png") viz(b)
+  @test_reference joinpath(datadir, "box2D-2.png") viz(b, showsegments=true)
+  @test_reference joinpath(datadir, "box2D-3.png") viz(b, color=:orange)
+  @test_reference joinpath(datadir, "box2D-4.png") viz(b, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "box2D-5.png") viz(b, color=:orange, alpha=0.5)
 
-    # 2D bezier
-    b = BezierCurve((0.0, 0.0), (1.0, 0.0), (1.0, 1.0))
-    @test_reference joinpath(datadir, "bezier2D-1.png") viz(b)
-    @test_reference joinpath(datadir, "bezier2D-2.png") viz(b, color=:orange)
-    @test_reference joinpath(datadir, "bezier2D-3.png") viz(b, color=:orange, alpha=0.5)
+  # 3D boxes
+  b = Box((0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
+  @test_reference joinpath(datadir, "box3D-1.png") viz(b)
+  @test_reference joinpath(datadir, "box3D-2.png") viz(b, color=:orange)
+  @test_reference joinpath(datadir, "box3D-3.png") viz(b, color=:orange, alpha=0.5)
+end
 
-    # 3D bezier
-    b = BezierCurve((0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (1.0, 1.0, 1.0))
-    @test_reference joinpath(datadir, "bezier3D-1.png") viz(b)
-    @test_reference joinpath(datadir, "bezier3D-2.png") viz(b, color=:orange)
-    @test_reference joinpath(datadir, "bezier3D-3.png") viz(b, color=:orange, alpha=0.5)
+@testitem "BezierCurve" setup = [Setup] begin
+  # 2D bezier
+  b = BezierCurve((0.0, 0.0), (1.0, 0.0), (1.0, 1.0))
+  @test_reference joinpath(datadir, "bezier2D-1.png") viz(b)
+  @test_reference joinpath(datadir, "bezier2D-2.png") viz(b, color=:orange)
+  @test_reference joinpath(datadir, "bezier2D-3.png") viz(b, color=:orange, alpha=0.5)
 
-    # 2D balls
-    b = Ball((0.0, 0.0), 1.0)
-    @test_reference joinpath(datadir, "ball2D-1.png") viz(b)
-    @test_reference joinpath(datadir, "ball2D-2.png") viz(b, showsegments=true)
-    @test_reference joinpath(datadir, "ball2D-3.png") viz(b, color=:orange)
-    @test_reference joinpath(datadir, "ball2D-4.png") viz(b, color=:cyan, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "ball2D-5.png") viz(b, color=:orange, alpha=0.5)
+  # 3D bezier
+  b = BezierCurve((0.0, 0.0, 0.0), (1.0, 0.0, 0.0), (1.0, 1.0, 1.0))
+  @test_reference joinpath(datadir, "bezier3D-1.png") viz(b)
+  @test_reference joinpath(datadir, "bezier3D-2.png") viz(b, color=:orange)
+  @test_reference joinpath(datadir, "bezier3D-3.png") viz(b, color=:orange, alpha=0.5)
+end
 
-    # 2D spheres
-    s = Sphere((0.0, 0.0), 1.0)
-    @test_reference joinpath(datadir, "sphere2D-1.png") viz(s)
-    @test_reference joinpath(datadir, "sphere2D-2.png") viz(s, color=:orange)
-    @test_reference joinpath(datadir, "sphere2D-3.png") viz(s, color=:orange, alpha=0.5)
+@testitem "Ball/Sphere" setup = [Setup] begin
+  # 2D balls
+  b = Ball((0.0, 0.0), 1.0)
+  @test_reference joinpath(datadir, "ball2D-1.png") viz(b)
+  @test_reference joinpath(datadir, "ball2D-2.png") viz(b, showsegments=true)
+  @test_reference joinpath(datadir, "ball2D-3.png") viz(b, color=:orange)
+  @test_reference joinpath(datadir, "ball2D-4.png") viz(b, color=:cyan, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "ball2D-5.png") viz(b, color=:orange, alpha=0.5)
 
-    # 3D spheres
-    s = Sphere((0.0, 0.0, 0.0), 1.0)
-    @test_reference joinpath(datadir, "sphere3D-1.png") viz(s)
-    @test_reference joinpath(datadir, "sphere3D-2.png") viz(s, color=:orange)
-    @test_reference joinpath(datadir, "sphere3D-3.png") viz(s, color=:orange, alpha=0.5)
+  # 2D spheres
+  s = Sphere((0.0, 0.0), 1.0)
+  @test_reference joinpath(datadir, "sphere2D-1.png") viz(s)
+  @test_reference joinpath(datadir, "sphere2D-2.png") viz(s, color=:orange)
+  @test_reference joinpath(datadir, "sphere2D-3.png") viz(s, color=:orange, alpha=0.5)
 
-    # cylinders
-    c = Cylinder(1.0)
-    @test_reference joinpath(datadir, "cylinder3D-1.png") viz(c)
-    @test_reference joinpath(datadir, "cylinder3D-2.png") viz(c, color=:orange)
-    @test_reference joinpath(datadir, "cylinder3D-3.png") viz(c, color=:orange, alpha=0.5)
-    c = Cylinder((1.0, 0.0, 0.0), (1.0, 1.0, 1.0), 1.0)
-    @test_reference joinpath(datadir, "cylinder3D-4.png") viz(c)
-    @test_reference joinpath(datadir, "cylinder3D-5.png") viz(c, color=:orange)
-    @test_reference joinpath(datadir, "cylinder3D-6.png") viz(c, color=:orange, alpha=0.5)
+  # 3D spheres
+  s = Sphere((0.0, 0.0, 0.0), 1.0)
+  @test_reference joinpath(datadir, "sphere3D-1.png") viz(s)
+  @test_reference joinpath(datadir, "sphere3D-2.png") viz(s, color=:orange)
+  @test_reference joinpath(datadir, "sphere3D-3.png") viz(s, color=:orange, alpha=0.5)
+end
 
-    # cylinder surface
-    c = CylinderSurface((1.0, 0.0, 0.0), (1.0, 1.0, 1.0), 1.0)
-    @test_reference joinpath(datadir, "cylsurf3D-1.png") viz(c)
-    @test_reference joinpath(datadir, "cylsurf3D-2.png") viz(c, color=:orange)
-    @test_reference joinpath(datadir, "cylsurf3D-3.png") viz(c, color=:orange, alpha=0.5)
+@testitem "Cylinder/CylinderSurface" setup = [Setup] begin
+  # cylinders
+  c = Cylinder(1.0)
+  @test_reference joinpath(datadir, "cylinder3D-1.png") viz(c)
+  @test_reference joinpath(datadir, "cylinder3D-2.png") viz(c, color=:orange)
+  @test_reference joinpath(datadir, "cylinder3D-3.png") viz(c, color=:orange, alpha=0.5)
+  c = Cylinder((1.0, 0.0, 0.0), (1.0, 1.0, 1.0), 1.0)
+  @test_reference joinpath(datadir, "cylinder3D-4.png") viz(c)
+  @test_reference joinpath(datadir, "cylinder3D-5.png") viz(c, color=:orange)
+  @test_reference joinpath(datadir, "cylinder3D-6.png") viz(c, color=:orange, alpha=0.5)
 
-    # collections of 1D geometries
-    c1 = Rope((0.0, 0.0), (1.0, 1.0), (0.0, 1.0))
-    c2 = Rope((1.0, 1.0), (2.0, 2.0), (1.0, 2.0))
-    c = GeometrySet([c1, c2])
-    @test_reference joinpath(datadir, "collec1D-1.png") viz(c)
-    @test_reference joinpath(datadir, "collec1D-2.png") viz(c, color=1:2)
-    @test_reference joinpath(datadir, "collec1D-3.png") viz(c, color=1:2, colormap=:inferno)
-    @test_reference joinpath(datadir, "collec1D-4.png") viz(c, color=[:red, :green], alpha=0.5)
-    @test_reference joinpath(datadir, "collec1D-5.png") viz(c, color=1:2, alpha=0.5)
+  # cylinder surface
+  c = CylinderSurface((1.0, 0.0, 0.0), (1.0, 1.0, 1.0), 1.0)
+  @test_reference joinpath(datadir, "cylsurf3D-1.png") viz(c)
+  @test_reference joinpath(datadir, "cylsurf3D-2.png") viz(c, color=:orange)
+  @test_reference joinpath(datadir, "cylsurf3D-3.png") viz(c, color=:orange, alpha=0.5)
+end
 
-    # collections of 2D geometries
-    t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
-    q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
-    d = GeometrySet([t, q])
-    @test_reference joinpath(datadir, "collec2D-1.png") viz(d)
-    @test_reference joinpath(datadir, "collec2D-2.png") viz(d, showsegments=true)
-    @test_reference joinpath(datadir, "collec2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "collec2D-4.png") viz(d, color=1:2)
-    @test_reference joinpath(datadir, "collec2D-5.png") viz(d, color=1:2, colormap=:inferno)
-    @test_reference joinpath(datadir, "collec2D-6.png") viz(d, color=[:red, :green], alpha=0.5)
-    @test_reference joinpath(datadir, "collec2D-7.png") viz(d, color=1:2, alpha=0.5)
+@testitem "GeometrySet" setup = [Setup] begin
+  # collections of 1D geometries
+  c1 = Rope((0.0, 0.0), (1.0, 1.0), (0.0, 1.0))
+  c2 = Rope((1.0, 1.0), (2.0, 2.0), (1.0, 2.0))
+  c = GeometrySet([c1, c2])
+  @test_reference joinpath(datadir, "collec1D-1.png") viz(c)
+  @test_reference joinpath(datadir, "collec1D-2.png") viz(c, color=1:2)
+  @test_reference joinpath(datadir, "collec1D-3.png") viz(c, color=1:2, colormap=:inferno)
+  @test_reference joinpath(datadir, "collec1D-4.png") viz(c, color=[:red, :green], alpha=0.5)
+  @test_reference joinpath(datadir, "collec1D-5.png") viz(c, color=1:2, alpha=0.5)
 
-    # collections of 3D multi-geometries
-    b1 = Box((0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
-    b2 = Box((2.0, 1.0, 0.0), (3.0, 2.0, 1.0))
-    s1 = Ball((3.0, 0.0, 3.0), 1.0)
-    s2 = Ball((-1.0, 0.0, -1.0), 1.0)
-    m1 = Multi([b1, b2])
-    m2 = Multi([s1, s2])
-    d = GeometrySet([m1, m2])
-    @test_reference joinpath(datadir, "collec3D-1.png") viz(d)
-    @test_reference joinpath(datadir, "collec3D-2.png") viz(d, color=1:2)
-    @test_reference joinpath(datadir, "collec3D-3.png") viz(d, color=1:2, colormap=:inferno)
-    @test_reference joinpath(datadir, "collec3D-4.png") viz(d, color=[:red, :green], alpha=0.5)
-    @test_reference joinpath(datadir, "collec3D-5.png") viz(d, color=1:2, alpha=0.5)
+  # collections of 2D geometries
+  t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
+  q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
+  d = GeometrySet([t, q])
+  @test_reference joinpath(datadir, "collec2D-1.png") viz(d)
+  @test_reference joinpath(datadir, "collec2D-2.png") viz(d, showsegments=true)
+  @test_reference joinpath(datadir, "collec2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "collec2D-4.png") viz(d, color=1:2)
+  @test_reference joinpath(datadir, "collec2D-5.png") viz(d, color=1:2, colormap=:inferno)
+  @test_reference joinpath(datadir, "collec2D-6.png") viz(d, color=[:red, :green], alpha=0.5)
+  @test_reference joinpath(datadir, "collec2D-7.png") viz(d, color=1:2, alpha=0.5)
 
-    # surface meshes
-    s = Sphere((0.0, 0.0, 0.0), 1.0)
-    m = discretize(s, RegularDiscretization(10))
-    nv = nvertices(m)
-    ne = nelements(m)
-    @test_reference joinpath(datadir, "surf3D-1.png") viz(m)
-    @test_reference joinpath(datadir, "surf3D-2.png") viz(m, color=1:nv)
-    @test_reference joinpath(datadir, "surf3D-3.png") viz(m, color=1:ne)
-    @test_reference joinpath(datadir, "surf3D-4.png") viz(m, color=1:ne, showsegments=true)
-    @test_reference joinpath(datadir, "surf3D-5.png") viz(m, color=:orange, showsegments=true, segmentcolor=:cyan)
-    @test_reference joinpath(datadir, "surf3D-6.png") viz(m, color=:orange, alpha=0.5)
-    @test_reference joinpath(datadir, "surf3D-7.png") viz(m, color=1:ne, alpha=0.5)
-    @test_reference joinpath(datadir, "surf3D-8.png") viz(m, color=1:ne, alpha=range(0.1, 1.0, length=ne))
+  # collections of 3D multi-geometries
+  b1 = Box((0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
+  b2 = Box((2.0, 1.0, 0.0), (3.0, 2.0, 1.0))
+  s1 = Ball((3.0, 0.0, 3.0), 1.0)
+  s2 = Ball((-1.0, 0.0, -1.0), 1.0)
+  m1 = Multi([b1, b2])
+  m2 = Multi([s1, s2])
+  d = GeometrySet([m1, m2])
+  @test_reference joinpath(datadir, "collec3D-1.png") viz(d)
+  @test_reference joinpath(datadir, "collec3D-2.png") viz(d, color=1:2)
+  @test_reference joinpath(datadir, "collec3D-3.png") viz(d, color=1:2, colormap=:inferno)
+  @test_reference joinpath(datadir, "collec3D-4.png") viz(d, color=[:red, :green], alpha=0.5)
+  @test_reference joinpath(datadir, "collec3D-5.png") viz(d, color=1:2, alpha=0.5)
+end
 
-    # volume meshes
-    g = CartesianGrid(10, 10, 10)
-    v = vertices(g)
-    e = collect(elements(topology(g)))
-    m = SimpleMesh(v, e)
-    nv = nvertices(m)
-    ne = nelements(m)
-    @test_reference joinpath(datadir, "vol3D-1.png") viz(m)
-    @test_reference joinpath(datadir, "vol3D-2.png") viz(m, color=1:ne)
-    @test_reference joinpath(datadir, "vol3D-3.png") viz(m, color=:orange)
-    @test_reference joinpath(datadir, "vol3D-4.png") viz(m, color=:orange, alpha=0.5)
-    @test_reference joinpath(datadir, "vol3D-5.png") viz(m, color=1:ne, alpha=0.5)
-    @test_reference joinpath(datadir, "vol3D-6.png") viz(m, color=1:ne, alpha=range(0.1, 1.0, length=ne))
+@testitem "Surface/Volume" setup = [Setup] begin
+  # surface meshes
+  s = Sphere((0.0, 0.0, 0.0), 1.0)
+  m = discretize(s, RegularDiscretization(10))
+  nv = nvertices(m)
+  ne = nelements(m)
+  @test_reference joinpath(datadir, "surf3D-1.png") viz(m)
+  @test_reference joinpath(datadir, "surf3D-2.png") viz(m, color=1:nv)
+  @test_reference joinpath(datadir, "surf3D-3.png") viz(m, color=1:ne)
+  @test_reference joinpath(datadir, "surf3D-4.png") viz(m, color=1:ne, showsegments=true)
+  @test_reference joinpath(datadir, "surf3D-5.png") viz(m, color=:orange, showsegments=true, segmentcolor=:cyan)
+  @test_reference joinpath(datadir, "surf3D-6.png") viz(m, color=:orange, alpha=0.5)
+  @test_reference joinpath(datadir, "surf3D-7.png") viz(m, color=1:ne, alpha=0.5)
+  @test_reference joinpath(datadir, "surf3D-8.png") viz(m, color=1:ne, alpha=range(0.1, 1.0, length=ne))
 
-    # vector of points
-    p = Point.([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
-    @test_reference joinpath(datadir, "points2D-1.png") viz(p)
-    @test_reference joinpath(datadir, "points2D-2.png") viz(p, color=1:4)
-    @test_reference joinpath(datadir, "points2D-3.png") viz(p, color=1:4, colormap=:inferno)
-    @test_reference joinpath(datadir, "points2D-4.png") viz(p, pointsize=20)
-    @test_reference joinpath(datadir, "points2D-5.png") viz(p, color=:red)
-    @test_reference joinpath(datadir, "points2D-6.png") viz(p, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "points2D-7.png") viz(p, color=1:4, alpha=0.5)
+  # volume meshes
+  g = CartesianGrid(10, 10, 10)
+  v = vertices(g)
+  e = collect(elements(topology(g)))
+  m = SimpleMesh(v, e)
+  nv = nvertices(m)
+  ne = nelements(m)
+  @test_reference joinpath(datadir, "vol3D-1.png") viz(m)
+  @test_reference joinpath(datadir, "vol3D-2.png") viz(m, color=1:ne)
+  @test_reference joinpath(datadir, "vol3D-3.png") viz(m, color=:orange)
+  @test_reference joinpath(datadir, "vol3D-4.png") viz(m, color=:orange, alpha=0.5)
+  @test_reference joinpath(datadir, "vol3D-5.png") viz(m, color=1:ne, alpha=0.5)
+  @test_reference joinpath(datadir, "vol3D-6.png") viz(m, color=1:ne, alpha=range(0.1, 1.0, length=ne))
+end
 
-    # vector of 2D geometries
-    t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
-    q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
-    g = [t, q]
-    @test_reference joinpath(datadir, "geoms2D-1.png") viz(g)
-    @test_reference joinpath(datadir, "geoms2D-2.png") viz(g, color=1:2)
-    @test_reference joinpath(datadir, "geoms2D-3.png") viz(g, color=1:2, colormap=:inferno)
-    @test_reference joinpath(datadir, "geoms2D-4.png") viz(g, color=:red)
-    @test_reference joinpath(datadir, "geoms2D-5.png") viz(g, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "geoms2D-6.png") viz(g, color=1:2, alpha=0.5)
-    @test_reference joinpath(datadir, "geoms2D-7.png") viz(g, showsegments=true, segmentcolor=:red)
+@testitem "Geometries" setup = [Setup] begin
+  # vector of points
+  p = Point.([(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)])
+  @test_reference joinpath(datadir, "points2D-1.png") viz(p)
+  @test_reference joinpath(datadir, "points2D-2.png") viz(p, color=1:4)
+  @test_reference joinpath(datadir, "points2D-3.png") viz(p, color=1:4, colormap=:inferno)
+  @test_reference joinpath(datadir, "points2D-4.png") viz(p, pointsize=20)
+  @test_reference joinpath(datadir, "points2D-5.png") viz(p, color=:red)
+  @test_reference joinpath(datadir, "points2D-6.png") viz(p, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "points2D-7.png") viz(p, color=1:4, alpha=0.5)
 
-    # vector of 3D geometries
-    c1 = Cylinder((0.0, 0.0, 0.0), (1.0, 1.0, 0.0), 2.0)
-    c2 = Cylinder((2.0, 2.0, 0.0), (3.0, 3.0, 0.0), 1.0)
-    g = [c1, c2]
-    @test_reference joinpath(datadir, "geoms3D-1.png") viz(g)
-    @test_reference joinpath(datadir, "geoms3D-2.png") viz(g, color=1:2)
-    @test_reference joinpath(datadir, "geoms3D-3.png") viz(g, color=1:2, colormap=:inferno)
-    @test_reference joinpath(datadir, "geoms3D-4.png") viz(g, color=:red)
-    @test_reference joinpath(datadir, "geoms3D-5.png") viz(g, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "geoms3D-6.png") viz(g, color=1:2, alpha=0.5)
+  # vector of 2D geometries
+  t = Triangle((1.0, 0.0), (2.0, 0.0), (2.0, 1.0))
+  q = Quadrangle((0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0))
+  g = [t, q]
+  @test_reference joinpath(datadir, "geoms2D-1.png") viz(g)
+  @test_reference joinpath(datadir, "geoms2D-2.png") viz(g, color=1:2)
+  @test_reference joinpath(datadir, "geoms2D-3.png") viz(g, color=1:2, colormap=:inferno)
+  @test_reference joinpath(datadir, "geoms2D-4.png") viz(g, color=:red)
+  @test_reference joinpath(datadir, "geoms2D-5.png") viz(g, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "geoms2D-6.png") viz(g, color=1:2, alpha=0.5)
+  @test_reference joinpath(datadir, "geoms2D-7.png") viz(g, showsegments=true, segmentcolor=:red)
 
-    # vector of 1D, 2D, 3D geometries
-    p = Point(2, 2, 0)
-    t = Triangle((1, 0, 2), (1, 1, 2), (0, 1, 2))
-    h = first(CartesianGrid(1, 1, 1))
-    g = [p, t, h]
-    @test_reference joinpath(datadir, "geoms-1.png") viz(g)
-    @test_reference joinpath(datadir, "geoms-2.png") viz(g, color=1:3)
-    @test_reference joinpath(datadir, "geoms-3.png") viz(g, color=1:3, colormap=:inferno)
-    @test_reference joinpath(datadir, "geoms-4.png") viz(g, color=:red)
-    @test_reference joinpath(datadir, "geoms-5.png") viz(g, color=:red, alpha=0.5)
-    @test_reference joinpath(datadir, "geoms-6.png") viz(g, color=1:3, alpha=0.5)
+  # vector of 3D geometries
+  c1 = Cylinder((0.0, 0.0, 0.0), (1.0, 1.0, 0.0), 2.0)
+  c2 = Cylinder((2.0, 2.0, 0.0), (3.0, 3.0, 0.0), 1.0)
+  g = [c1, c2]
+  @test_reference joinpath(datadir, "geoms3D-1.png") viz(g)
+  @test_reference joinpath(datadir, "geoms3D-2.png") viz(g, color=1:2)
+  @test_reference joinpath(datadir, "geoms3D-3.png") viz(g, color=1:2, colormap=:inferno)
+  @test_reference joinpath(datadir, "geoms3D-4.png") viz(g, color=:red)
+  @test_reference joinpath(datadir, "geoms3D-5.png") viz(g, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "geoms3D-6.png") viz(g, color=1:2, alpha=0.5)
 
-    # views of grids (optimized for performance)
-    g = CartesianGrid(10, 10)
-    v = view(g, 1:2:100)
-    @test_reference joinpath(datadir, "gridview2D-1.png") viz(v)
-    @test_reference joinpath(datadir, "gridview2D-2.png") viz(v, color=1:50)
-    @test_reference joinpath(datadir, "gridview2D-3.png") viz(v, color=1:50, colormap=:inferno)
-    g = CartesianGrid(10, 10, 10)
-    v = view(g, 1:2:1000)
-    @test_reference joinpath(datadir, "gridview3D-1.png") viz(v)
-    @test_reference joinpath(datadir, "gridview3D-2.png") viz(v, color=1:500)
-    @test_reference joinpath(datadir, "gridview3D-3.png") viz(v, color=1:500, colormap=:inferno)
+  # vector of 1D, 2D, 3D geometries
+  p = Point(2, 2, 0)
+  t = Triangle((1, 0, 2), (1, 1, 2), (0, 1, 2))
+  h = first(CartesianGrid(1, 1, 1))
+  g = [p, t, h]
+  @test_reference joinpath(datadir, "geoms-1.png") viz(g)
+  @test_reference joinpath(datadir, "geoms-2.png") viz(g, color=1:3)
+  @test_reference joinpath(datadir, "geoms-3.png") viz(g, color=1:3, colormap=:inferno)
+  @test_reference joinpath(datadir, "geoms-4.png") viz(g, color=:red)
+  @test_reference joinpath(datadir, "geoms-5.png") viz(g, color=:red, alpha=0.5)
+  @test_reference joinpath(datadir, "geoms-6.png") viz(g, color=1:3, alpha=0.5)
+end
 
-    # views of meshes
-    g = CartesianGrid(10, 10)
-    m = convert(SimpleMesh, g)
-    v = view(m, 1:2:100)
-    @test_reference joinpath(datadir, "meshview2D-1.png") viz(v)
-    @test_reference joinpath(datadir, "meshview2D-2.png") viz(v, color=1:50)
-    @test_reference joinpath(datadir, "meshview2D-3.png") viz(v, color=1:50, colormap=:inferno)
-    g = CartesianGrid(10, 10, 10)
-    m = convert(SimpleMesh, g)
-    v = view(m, 1:2:1000)
-    @test_reference joinpath(datadir, "meshview3D-1.png") viz(v)
-    @test_reference joinpath(datadir, "meshview3D-2.png") viz(v, color=1:500)
-    @test_reference joinpath(datadir, "meshview3D-3.png") viz(v, color=1:500, colormap=:inferno)
+@testitem "Views" setup = [Setup] begin
+  # views of grids (optimized for performance)
+  g = CartesianGrid(10, 10)
+  v = view(g, 1:2:100)
+  @test_reference joinpath(datadir, "gridview2D-1.png") viz(v)
+  @test_reference joinpath(datadir, "gridview2D-2.png") viz(v, color=1:50)
+  @test_reference joinpath(datadir, "gridview2D-3.png") viz(v, color=1:50, colormap=:inferno)
+  g = CartesianGrid(10, 10, 10)
+  v = view(g, 1:2:1000)
+  @test_reference joinpath(datadir, "gridview3D-1.png") viz(v)
+  @test_reference joinpath(datadir, "gridview3D-2.png") viz(v, color=1:500)
+  @test_reference joinpath(datadir, "gridview3D-3.png") viz(v, color=1:500, colormap=:inferno)
 
-    # reactilinear grid
-    x = 0:0.2:1
-    y = [0.0, 0.1, 0.3, 0.7, 0.9, 1.0]
-    g = RectilinearGrid(x, y)
-    @test_reference joinpath(datadir, "reactilineargrid2D-1.png") viz(g, showsegments=true)
-    @test_reference joinpath(datadir, "reactilineargrid2D-2.png") viz(g, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "reactilineargrid2D-3.png") viz(g, color=1:25, colormap=:inferno)
-    @test_reference joinpath(datadir, "reactilineargrid2D-4.png") viz(g, color=:red, alpha=0.5, showsegments=true)
-    @test_reference joinpath(datadir, "reactilineargrid2D-5.png") viz(
-      g,
-      color=1:25,
-      showsegments=true,
-      segmentcolor=:red
-    )
-    @test_reference joinpath(datadir, "reactilineargrid2D-6.png") viz(
-      g,
-      showsegments=true,
-      segmentcolor=:red,
-      segmentsize=5
-    )
+  # views of meshes
+  g = CartesianGrid(10, 10)
+  m = convert(SimpleMesh, g)
+  v = view(m, 1:2:100)
+  @test_reference joinpath(datadir, "meshview2D-1.png") viz(v)
+  @test_reference joinpath(datadir, "meshview2D-2.png") viz(v, color=1:50)
+  @test_reference joinpath(datadir, "meshview2D-3.png") viz(v, color=1:50, colormap=:inferno)
+  g = CartesianGrid(10, 10, 10)
+  m = convert(SimpleMesh, g)
+  v = view(m, 1:2:1000)
+  @test_reference joinpath(datadir, "meshview3D-1.png") viz(v)
+  @test_reference joinpath(datadir, "meshview3D-2.png") viz(v, color=1:500)
+  @test_reference joinpath(datadir, "meshview3D-3.png") viz(v, color=1:500, colormap=:inferno)
+end
 
-    # structured grid
-    X = [i / 20 * cos(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]
-    Y = [i / 20 * sin(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]
-    g = StructuredGrid(X, Y)
-    @test_reference joinpath(datadir, "structuredgrid2D-1.png") viz(g, showsegments=true)
-    @test_reference joinpath(datadir, "structuredgrid2D-2.png") viz(g, showsegments=true, segmentcolor=:red)
-    @test_reference joinpath(datadir, "structuredgrid2D-3.png") viz(g, color=1:551, colormap=:inferno)
-    @test_reference joinpath(datadir, "structuredgrid2D-4.png") viz(g, color=:red, alpha=0.5, showsegments=true)
-    @test_reference joinpath(datadir, "structuredgrid2D-5.png") viz(
-      g,
-      color=1:551,
-      showsegments=true,
-      segmentcolor=:red
-    )
-    @test_reference joinpath(datadir, "structuredgrid2D-6.png") viz(
-      g,
-      showsegments=true,
-      segmentcolor=:red,
-      segmentsize=5
-    )
+@testitem "Grids" setup = [Setup] begin
+  # reactilinear grid
+  x = 0:0.2:1
+  y = [0.0, 0.1, 0.3, 0.7, 0.9, 1.0]
+  g = RectilinearGrid(x, y)
+  @test_reference joinpath(datadir, "reactilineargrid2D-1.png") viz(g, showsegments=true)
+  @test_reference joinpath(datadir, "reactilineargrid2D-2.png") viz(g, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "reactilineargrid2D-3.png") viz(g, color=1:25, colormap=:inferno)
+  @test_reference joinpath(datadir, "reactilineargrid2D-4.png") viz(g, color=:red, alpha=0.5, showsegments=true)
+  @test_reference joinpath(datadir, "reactilineargrid2D-5.png") viz(g, color=1:25, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "reactilineargrid2D-6.png") viz(
+    g,
+    showsegments=true,
+    segmentcolor=:red,
+    segmentsize=5
+  )
 
-    # missing values
-    rng = MersenneTwister(123)
-    d = CartesianGrid(2, 2)
-    c = [1, missing, 3, missing]
-    @test_reference joinpath(datadir, "missing-1.png") viz(d, color=c)
-    d = CartesianGrid(2, 2)
-    c = [1.0, NaN, 3.0, NaN]
-    @test_reference joinpath(datadir, "missing-2.png") viz(d, color=c)
-  end
+  # structured grid
+  X = [i / 20 * cos(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]
+  Y = [i / 20 * sin(3π / 2 * (j - 1) / (30 - 1)) for i in 1:20, j in 1:30]
+  g = StructuredGrid(X, Y)
+  @test_reference joinpath(datadir, "structuredgrid2D-1.png") viz(g, showsegments=true)
+  @test_reference joinpath(datadir, "structuredgrid2D-2.png") viz(g, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "structuredgrid2D-3.png") viz(g, color=1:551, colormap=:inferno)
+  @test_reference joinpath(datadir, "structuredgrid2D-4.png") viz(g, color=:red, alpha=0.5, showsegments=true)
+  @test_reference joinpath(datadir, "structuredgrid2D-5.png") viz(g, color=1:551, showsegments=true, segmentcolor=:red)
+  @test_reference joinpath(datadir, "structuredgrid2D-6.png") viz(
+    g,
+    showsegments=true,
+    segmentcolor=:red,
+    segmentsize=5
+  )
+end
 
-  @testset "algorithms" begin
-    # TriRefinement
-    grid = CartesianGrid(3, 3)
-    ref1 = refine(grid, TriRefinement())
-    ref2 = refine(ref1, TriRefinement())
-    ref3 = refine(ref2, TriRefinement())
-    fig = Mke.Figure(size=(900, 300))
-    viz(fig[1, 1], ref1, showsegments=true)
-    viz(fig[1, 2], ref2, showsegments=true)
-    viz(fig[1, 3], ref3, showsegments=true)
-    @test_reference joinpath(datadir, "trirefinement.png") fig
+@testitem "Missings" setup = [Setup] begin
+  # missing values
+  d = CartesianGrid(2, 2)
+  c = [1, missing, 3, missing]
+  @test_reference joinpath(datadir, "missing-1.png") viz(d, color=c)
+  d = CartesianGrid(2, 2)
+  c = [1.0, NaN, 3.0, NaN]
+  @test_reference joinpath(datadir, "missing-2.png") viz(d, color=c)
+end
 
-    # QuadRefinement
-    points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.25, 0.25), (0.75, 0.25), (0.5, 0.75)])
-    connec = connect.([(1, 2, 6, 5), (1, 5, 7, 3), (2, 4, 7, 6), (3, 7, 4)])
-    mesh = SimpleMesh(points, connec)
-    ref1 = refine(mesh, QuadRefinement())
-    ref2 = refine(ref1, QuadRefinement())
-    ref3 = refine(ref2, QuadRefinement())
-    fig = Mke.Figure(size=(900, 300))
-    viz(fig[1, 1], ref1, showsegments=true)
-    viz(fig[1, 2], ref2, showsegments=true)
-    viz(fig[1, 3], ref3, showsegments=true)
-    @test_reference joinpath(datadir, "quadrefinement.png") fig
+@testitem "TriRefinement" setup = [Setup] begin
+  grid = CartesianGrid(3, 3)
+  ref1 = refine(grid, TriRefinement())
+  ref2 = refine(ref1, TriRefinement())
+  ref3 = refine(ref2, TriRefinement())
+  fig = Mke.Figure(size=(900, 300))
+  viz(fig[1, 1], ref1, showsegments=true)
+  viz(fig[1, 2], ref2, showsegments=true)
+  viz(fig[1, 3], ref3, showsegments=true)
+  @test_reference joinpath(datadir, "trirefinement.png") fig
+end
 
-    # CatmullClark 1
-    points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.5, 0.5)])
-    connec = connect.([(1, 2, 5), (2, 4, 5), (4, 3, 5), (3, 1, 5)])
-    mesh = SimpleMesh(points, connec)
-    ref1 = refine(mesh, CatmullClarkRefinement())
-    ref2 = refine(ref1, CatmullClarkRefinement())
-    ref3 = refine(ref2, CatmullClarkRefinement())
-    fig = Mke.Figure(size=(900, 300))
-    viz(fig[1, 1], ref1, showsegments=true)
-    viz(fig[1, 2], ref2, showsegments=true)
-    viz(fig[1, 3], ref3, showsegments=true)
-    @test_reference joinpath(datadir, "catmullclark1.png") fig
+@testitem "QuadRefinement" setup = [Setup] begin
+  points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.25, 0.25), (0.75, 0.25), (0.5, 0.75)])
+  connec = connect.([(1, 2, 6, 5), (1, 5, 7, 3), (2, 4, 7, 6), (3, 7, 4)])
+  mesh = SimpleMesh(points, connec)
+  ref1 = refine(mesh, QuadRefinement())
+  ref2 = refine(ref1, QuadRefinement())
+  ref3 = refine(ref2, QuadRefinement())
+  fig = Mke.Figure(size=(900, 300))
+  viz(fig[1, 1], ref1, showsegments=true)
+  viz(fig[1, 2], ref2, showsegments=true)
+  viz(fig[1, 3], ref3, showsegments=true)
+  @test_reference joinpath(datadir, "quadrefinement.png") fig
+end
 
-    # CatmullClark 2
-    points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.25, 0.25), (0.75, 0.25), (0.5, 0.75)])
-    connec = connect.([(1, 2, 6, 5), (1, 5, 7, 3), (2, 4, 7, 6), (3, 7, 4)])
-    mesh = SimpleMesh(points, connec)
-    ref1 = refine(mesh, CatmullClarkRefinement())
-    ref2 = refine(ref1, CatmullClarkRefinement())
-    ref3 = refine(ref2, CatmullClarkRefinement())
-    fig = Mke.Figure(size=(900, 300))
-    viz(fig[1, 1], ref1, showsegments=true)
-    viz(fig[1, 2], ref2, showsegments=true)
-    viz(fig[1, 3], ref3, showsegments=true)
-    @test_reference joinpath(datadir, "catmullclark2.png") fig
+@testitem "CatmullClark" setup = [Setup] begin
+  points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.5, 0.5)])
+  connec = connect.([(1, 2, 5), (2, 4, 5), (4, 3, 5), (3, 1, 5)])
+  mesh = SimpleMesh(points, connec)
+  ref1 = refine(mesh, CatmullClarkRefinement())
+  ref2 = refine(ref1, CatmullClarkRefinement())
+  ref3 = refine(ref2, CatmullClarkRefinement())
+  fig = Mke.Figure(size=(900, 300))
+  viz(fig[1, 1], ref1, showsegments=true)
+  viz(fig[1, 2], ref2, showsegments=true)
+  viz(fig[1, 3], ref3, showsegments=true)
+  @test_reference joinpath(datadir, "catmullclark1.png") fig
 
-    # CatmullClark 3
-    points = Point.([(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)])
-    connec = connect.([(1, 4, 3, 2), (5, 6, 7, 8), (1, 2, 6, 5), (3, 4, 8, 7), (1, 5, 8, 4), (2, 3, 7, 6)])
-    mesh = SimpleMesh(points, connec)
-    ref1 = refine(mesh, CatmullClarkRefinement())
-    ref2 = refine(ref1, CatmullClarkRefinement())
-    ref3 = refine(ref2, CatmullClarkRefinement())
-    fig = Mke.Figure(size=(900, 300))
-    viz(fig[1, 1], ref1, showsegments=true)
-    viz(fig[1, 2], ref2, showsegments=true)
-    viz(fig[1, 3], ref3, showsegments=true)
-    @test_reference joinpath(datadir, "catmullclark3.png") fig
+  points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.25, 0.25), (0.75, 0.25), (0.5, 0.75)])
+  connec = connect.([(1, 2, 6, 5), (1, 5, 7, 3), (2, 4, 7, 6), (3, 7, 4)])
+  mesh = SimpleMesh(points, connec)
+  ref1 = refine(mesh, CatmullClarkRefinement())
+  ref2 = refine(ref1, CatmullClarkRefinement())
+  ref3 = refine(ref2, CatmullClarkRefinement())
+  fig = Mke.Figure(size=(900, 300))
+  viz(fig[1, 1], ref1, showsegments=true)
+  viz(fig[1, 2], ref2, showsegments=true)
+  viz(fig[1, 3], ref3, showsegments=true)
+  @test_reference joinpath(datadir, "catmullclark2.png") fig
 
-    # TriSubdivision
-    points = Point.([(-1, -1, -1), (1, 1, -1), (1, -1, 1), (-1, 1, 1)])
-    connec = connect.([(1, 2, 3), (3, 2, 4), (4, 2, 1), (1, 3, 4)])
-    mesh = SimpleMesh(points, connec)
-    ref1 = refine(mesh, TriSubdivision())
-    ref2 = refine(ref1, TriSubdivision())
-    ref3 = refine(ref2, TriSubdivision())
-    fig = Mke.Figure(size=(900, 300))
-    viz(fig[1, 1], ref1, showsegments=true)
-    viz(fig[1, 2], ref2, showsegments=true)
-    viz(fig[1, 3], ref3, showsegments=true)
-    @test_reference joinpath(datadir, "trisubdivision.png") fig
-  end
+  points = Point.([(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)])
+  connec = connect.([(1, 4, 3, 2), (5, 6, 7, 8), (1, 2, 6, 5), (3, 4, 8, 7), (1, 5, 8, 4), (2, 3, 7, 6)])
+  mesh = SimpleMesh(points, connec)
+  ref1 = refine(mesh, CatmullClarkRefinement())
+  ref2 = refine(ref1, CatmullClarkRefinement())
+  ref3 = refine(ref2, CatmullClarkRefinement())
+  fig = Mke.Figure(size=(900, 300))
+  viz(fig[1, 1], ref1, showsegments=true)
+  viz(fig[1, 2], ref2, showsegments=true)
+  viz(fig[1, 3], ref3, showsegments=true)
+  @test_reference joinpath(datadir, "catmullclark3.png") fig
+end
 
-  @testset "viewer" begin
-    grid = CartesianGrid(10, 10)
+@testitem "TriSubdivision" setup = [Setup] begin
+  points = Point.([(-1, -1, -1), (1, 1, -1), (1, -1, 1), (-1, 1, 1)])
+  connec = connect.([(1, 2, 3), (3, 2, 4), (4, 2, 1), (1, 3, 4)])
+  mesh = SimpleMesh(points, connec)
+  ref1 = refine(mesh, TriSubdivision())
+  ref2 = refine(ref1, TriSubdivision())
+  ref3 = refine(ref2, TriSubdivision())
+  fig = Mke.Figure(size=(900, 300))
+  viz(fig[1, 1], ref1, showsegments=true)
+  viz(fig[1, 2], ref2, showsegments=true)
+  viz(fig[1, 3], ref3, showsegments=true)
+  @test_reference joinpath(datadir, "trisubdivision.png") fig
+end
 
-    # continuous variables
-    a = rand(rng, 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-continuous.png") viewer(gtb)
+@testitem "viewer" setup = [Setup] begin
+  grid = CartesianGrid(10, 10)
 
-    # categorical variables
-    a = rand(rng, 1:5, 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-categorical-1.png") viewer(gtb)
-    a = rand(rng, ["yes", "no"], 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-categorical-2.png") viewer(gtb)
+  rng = StableRNG(123)
 
-    # distributional variables
-    a = Normal.(rand(rng, 100), rand(rng, 100))
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-distributional.png") viewer(gtb)
+  # continuous variables
+  a = rand(rng, 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-continuous.png") viewer(gtb)
 
-    # colors
-    a = Gray.(rand(rng, 100))
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-colors.png") viewer(gtb)
+  # categorical variables
+  a = rand(rng, 1:5, 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-categorical-1.png") viewer(gtb)
+  a = rand(rng, ["yes", "no"], 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-categorical-2.png") viewer(gtb)
 
-    # constant columns
-    # continuous
-    a = fill(1.0, 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-const-continuous.png") viewer(gtb)
-    # categorical
-    a = fill("test", 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-const-categorical.png") viewer(gtb)
-    # distributional
-    a = fill(Normal(), 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-const-distributional.png") viewer(gtb)
-    # color
-    a = fill(Gray(0.1), 100)
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-const-color.png") viewer(gtb)
+  # distributional variables
+  a = Normal.(rand(rng, 100), rand(rng, 100))
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-distributional.png") viewer(gtb)
 
-    # missing values
-    missings = fill(missing, 20)
-    # continuous with missing
-    a = shuffle(rng, [missings; rand(rng, 80)])
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-missing-continuous-1.png") viewer(gtb)
-    # continuous with NaN
-    a = shuffle(rng, [fill(NaN, 20); rand(rng, 80)])
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-missing-continuous-2.png") viewer(gtb)
-    # continuous with missing and NaN
-    a = shuffle(rng, [fill(missing, 10); fill(NaN, 10); rand(rng, 80)])
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-missing-continuous-3.png") viewer(gtb)
-    # categorical
-    a = shuffle(rng, [missings; rand(rng, 'a':'e', 80)])
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-missing-categorical.png") viewer(gtb)
-    # distributional
-    a = shuffle(rng, [missings; Normal.(rand(rng, 80), rand(rng, 80))])
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-missing-distributional.png") viewer(gtb)
-    # colors
-    a = shuffle(rng, [missings; RGB.(rand(rng, 80), rand(rng, 80), rand(rng, 80))])
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-missing-colors.png") viewer(gtb)
+  # colors
+  a = Gray.(rand(rng, 100))
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-colors.png") viewer(gtb)
 
-    # units
-    # continuous
-    a = rand(rng, 100) * u"m/s"
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-unit-continuous.png") viewer(gtb)
-    # categorical
-    a = rand(rng, 1:5, 100) * u"°C"
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-unit-categorical.png") viewer(gtb)
-    # continuous with missing
-    a = shuffle(rng, [missings; rand(rng, 80)]) * u"m/s"
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-unit-missing-continuous.png") viewer(gtb)
-    # categorical with missing
-    a = shuffle(rng, [missings; rand(rng, 1:5, 80)]) * u"°C"
-    gtb = georef((; a), grid)
-    @test_reference joinpath(datadir, "viewer-unit-missing-categorical.png") viewer(gtb)
+  # constant columns
+  # continuous
+  a = fill(1.0, 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-const-continuous.png") viewer(gtb)
+  # categorical
+  a = fill("test", 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-const-categorical.png") viewer(gtb)
+  # distributional
+  a = fill(Normal(), 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-const-distributional.png") viewer(gtb)
+  # color
+  a = fill(Gray(0.1), 100)
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-const-color.png") viewer(gtb)
 
-    # error: could not find viewable variables
-    a = fill(missing, 100) # all missing values
-    b = fill(NaN, 100) # all missing values
-    c = fill(nothing, 100) # Unknown scitype
-    gtb = georef((; a, b, c), grid)
-    @test_throws AssertionError viewer(gtb)
-  end
+  # missing values
+  missings = fill(missing, 20)
+  # continuous with missing
+  a = shuffle(rng, [missings; rand(rng, 80)])
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-missing-continuous-1.png") viewer(gtb)
+  # continuous with NaN
+  a = shuffle(rng, [fill(NaN, 20); rand(rng, 80)])
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-missing-continuous-2.png") viewer(gtb)
+  # continuous with missing and NaN
+  a = shuffle(rng, [fill(missing, 10); fill(NaN, 10); rand(rng, 80)])
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-missing-continuous-3.png") viewer(gtb)
+  # categorical
+  a = shuffle(rng, [missings; rand(rng, 'a':'e', 80)])
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-missing-categorical.png") viewer(gtb)
+  # distributional
+  a = shuffle(rng, [missings; Normal.(rand(rng, 80), rand(rng, 80))])
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-missing-distributional.png") viewer(gtb)
+  # colors
+  a = shuffle(rng, [missings; RGB.(rand(rng, 80), rand(rng, 80), rand(rng, 80))])
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-missing-colors.png") viewer(gtb)
+
+  # units
+  # continuous
+  a = rand(rng, 100) * u"m/s"
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-unit-continuous.png") viewer(gtb)
+  # categorical
+  a = rand(rng, 1:5, 100) * u"°C"
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-unit-categorical.png") viewer(gtb)
+  # continuous with missing
+  a = shuffle(rng, [missings; rand(rng, 80)]) * u"m/s"
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-unit-missing-continuous.png") viewer(gtb)
+  # categorical with missing
+  a = shuffle(rng, [missings; rand(rng, 1:5, 80)]) * u"°C"
+  gtb = georef((; a), grid)
+  @test_reference joinpath(datadir, "viewer-unit-missing-categorical.png") viewer(gtb)
+
+  # error: could not find viewable variables
+  a = fill(missing, 100) # all missing values
+  b = fill(NaN, 100) # all missing values
+  c = fill(nothing, 100) # Unknown scitype
+  gtb = georef((; a, b, c), grid)
+  @test_throws AssertionError viewer(gtb)
 end

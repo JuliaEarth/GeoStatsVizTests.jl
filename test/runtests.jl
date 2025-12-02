@@ -73,6 +73,22 @@ rng = MersenneTwister(2)
     @test_reference joinpath(datadir, "grid3D-11.png") viz(d, showsegments=true, segmentsize=5)
     @test_reference joinpath(datadir, "grid3D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
 
+    # 2D simple mesh
+    d = simplexify(CartesianGrid(10, 10))
+    ne = nelements(d)
+    @test_reference joinpath(datadir, "mesh2D-1.png") viz(d)
+    @test_reference joinpath(datadir, "mesh2D-2.png") viz(d, showsegments=true)
+    @test_reference joinpath(datadir, "mesh2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
+    @test_reference joinpath(datadir, "mesh2D-4.png") viz(d, color=1:ne)
+    @test_reference joinpath(datadir, "mesh2D-5.png") viz(d, color=1:ne, colormap=:inferno)
+    @test_reference joinpath(datadir, "mesh2D-6.png") viz(d, color=:red)
+    @test_reference joinpath(datadir, "mesh2D-7.png") viz(d, color=:red, alpha=0.5)
+    @test_reference joinpath(datadir, "mesh2D-8.png") viz(d, color=1:ne, alpha=0.5)
+    @test_reference joinpath(datadir, "mesh2D-9.png") viz(d, color=1:ne, showsegments=true)
+    @test_reference joinpath(datadir, "mesh2D-10.png") viz(d, color=1:ne, showsegments=true, segmentcolor=:red)
+    @test_reference joinpath(datadir, "mesh2D-11.png") viz(d, showsegments=true, segmentsize=5)
+    @test_reference joinpath(datadir, "mesh2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+
     # 2D chain
     c = Rope((0.0, 0.0), (1.0, 0.5), (1.0, 1.0), (2.0, 0.0))
     @test_reference joinpath(datadir, "chain2D-1.png") viz(c)
@@ -389,6 +405,84 @@ rng = MersenneTwister(2)
     d = CartesianGrid(2, 2)
     c = [1.0, NaN, 3.0, NaN]
     @test_reference joinpath(datadir, "missing-2.png") viz(d, color=c)
+  end
+
+  @testset "algorithms" begin
+    # TriRefinement
+    grid = CartesianGrid(3, 3)
+    ref1 = refine(grid, TriRefinement())
+    ref2 = refine(ref1, TriRefinement())
+    ref3 = refine(ref2, TriRefinement())
+    fig = Mke.Figure(size=(900, 300))
+    viz(fig[1, 1], ref1, showsegments=true)
+    viz(fig[1, 2], ref2, showsegments=true)
+    viz(fig[1, 3], ref3, showsegments=true)
+    @test_reference joinpath(datadir, "trirefinement.png") fig
+
+    # QuadRefinement
+    points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.25, 0.25), (0.75, 0.25), (0.5, 0.75)])
+    connec = connect.([(1, 2, 6, 5), (1, 5, 7, 3), (2, 4, 7, 6), (3, 7, 4)])
+    mesh = SimpleMesh(points, connec)
+    ref1 = refine(mesh, QuadRefinement())
+    ref2 = refine(ref1, QuadRefinement())
+    ref3 = refine(ref2, QuadRefinement())
+    fig = Mke.Figure(size=(900, 300))
+    viz(fig[1, 1], ref1, showsegments=true)
+    viz(fig[1, 2], ref2, showsegments=true)
+    viz(fig[1, 3], ref3, showsegments=true)
+    @test_reference joinpath(datadir, "quadrefinement.png") fig
+
+    # CatmullClark 1
+    points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.5, 0.5)])
+    connec = connect.([(1, 2, 5), (2, 4, 5), (4, 3, 5), (3, 1, 5)])
+    mesh = SimpleMesh(points, connec)
+    ref1 = refine(mesh, CatmullClarkRefinement())
+    ref2 = refine(ref1, CatmullClarkRefinement())
+    ref3 = refine(ref2, CatmullClarkRefinement())
+    fig = Mke.Figure(size=(900, 300))
+    viz(fig[1, 1], ref1, showsegments=true)
+    viz(fig[1, 2], ref2, showsegments=true)
+    viz(fig[1, 3], ref3, showsegments=true)
+    @test_reference joinpath(datadir, "catmullclark1.png") fig
+
+    # CatmullClark 2
+    points = Point.([(0, 0), (1, 0), (0, 1), (1, 1), (0.25, 0.25), (0.75, 0.25), (0.5, 0.75)])
+    connec = connect.([(1, 2, 6, 5), (1, 5, 7, 3), (2, 4, 7, 6), (3, 7, 4)])
+    mesh = SimpleMesh(points, connec)
+    ref1 = refine(mesh, CatmullClarkRefinement())
+    ref2 = refine(ref1, CatmullClarkRefinement())
+    ref3 = refine(ref2, CatmullClarkRefinement())
+    fig = Mke.Figure(size=(900, 300))
+    viz(fig[1, 1], ref1, showsegments=true)
+    viz(fig[1, 2], ref2, showsegments=true)
+    viz(fig[1, 3], ref3, showsegments=true)
+    @test_reference joinpath(datadir, "catmullclark2.png") fig
+
+    # CatmullClark 3
+    points = Point.([(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)])
+    connec = connect.([(1, 4, 3, 2), (5, 6, 7, 8), (1, 2, 6, 5), (3, 4, 8, 7), (1, 5, 8, 4), (2, 3, 7, 6)])
+    mesh = SimpleMesh(points, connec)
+    ref1 = refine(mesh, CatmullClarkRefinement())
+    ref2 = refine(ref1, CatmullClarkRefinement())
+    ref3 = refine(ref2, CatmullClarkRefinement())
+    fig = Mke.Figure(size=(900, 300))
+    viz(fig[1, 1], ref1, showsegments=true)
+    viz(fig[1, 2], ref2, showsegments=true)
+    viz(fig[1, 3], ref3, showsegments=true)
+    @test_reference joinpath(datadir, "catmullclark3.png") fig
+
+    # TriSubdivision
+    points = Point.([(-1, -1, -1), (1, 1, -1), (1, -1, 1), (-1, 1, 1)])
+    connec = connect.([(1, 2, 3), (3, 2, 4), (4, 2, 1), (1, 3, 4)])
+    mesh = SimpleMesh(points, connec)
+    ref1 = refine(mesh, TriSubdivision())
+    ref2 = refine(ref1, TriSubdivision())
+    ref3 = refine(ref2, TriSubdivision())
+    fig = Mke.Figure(size=(900, 300))
+    viz(fig[1, 1], ref1, showsegments=true)
+    viz(fig[1, 2], ref2, showsegments=true)
+    viz(fig[1, 3], ref3, showsegments=true)
+    @test_reference joinpath(datadir, "trisubdivision.png") fig
   end
 
   @testset "viewer" begin

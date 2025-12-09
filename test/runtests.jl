@@ -79,8 +79,19 @@ end
   @test_reference joinpath(datadir, "box-euclid2D-2.png") viz(b, color="teal")
   @test_reference joinpath(datadir, "box-euclid2D-3.png") viz(b, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "box-euclid2D-4.png") viz(b, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "box-euclid2D-5.png") viz(b, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "box-euclid2D-6.png") viz(b, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "box-euclid2D-5.png") viz(
+    b,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "box-euclid2D-6.png") viz(
+    b,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D Box (LatLon)
   b = Box(latlon(0, 0), latlon(10, 10))
@@ -89,7 +100,13 @@ end
   @test_reference joinpath(datadir, "box-globe-3.png") viz(b, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "box-globe-4.png") viz(b, color="teal", showsegments=true)
   @test_reference joinpath(datadir, "box-globe-5.png") viz(b, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "box-globe-6.png") viz(b, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "box-globe-6.png") viz(
+    b,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 3D Box (Cartesian)
   b = Box(cart(0, 0, 0), cart(10, 10, 10))
@@ -104,21 +121,42 @@ end
   @test_reference joinpath(datadir, "bezier-euclid2D-1.png") viz(b)
   @test_reference joinpath(datadir, "bezier-euclid2D-2.png") viz(b, color="teal")
   @test_reference joinpath(datadir, "bezier-euclid2D-3.png") viz(b, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "bezier-euclid2D-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "bezier-euclid2D-4.png") viz(
+    b,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 
   # 2D Bezier (LatLon)
   b = BezierCurve(latlon(0, 0), latlon(0, 10), latlon(10, 10))
   @test_reference joinpath(datadir, "bezier-globe-1.png") viz(b)
   @test_reference joinpath(datadir, "bezier-globe-2.png") viz(b, color="teal")
   @test_reference joinpath(datadir, "bezier-globe-3.png") viz(b, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "bezier-globe-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "bezier-globe-4.png") viz(
+    b,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 
   # 3D Bezier (Cartesian)
   b = BezierCurve(cart(0, 0, 0), cart(10, 0, 0), cart(10, 20, 10))
   @test_reference joinpath(datadir, "bezier-euclid3D-1.png") viz(b)
   @test_reference joinpath(datadir, "bezier-euclid3D-2.png") viz(b, color="teal")
   @test_reference joinpath(datadir, "bezier-euclid3D-3.png") viz(b, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "bezier-euclid3D-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "bezier-euclid3D-4.png") viz(
+    b,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 end
 
 @testitem "Ball/Sphere" setup = [Setup] begin
@@ -192,28 +230,56 @@ end
   @test_reference joinpath(datadir, "seg-euclid2D-1.png") viz(s)
   @test_reference joinpath(datadir, "seg-euclid2D-2.png") viz(s, color="teal")
   @test_reference joinpath(datadir, "seg-euclid2D-3.png") viz(s, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "seg-euclid2D-4.png") viz(s, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "seg-euclid2D-4.png") viz(
+    s,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 
   # 2D Segment (LatLon)
   s = Segment(latlon(0, 0), latlon(10, 10))
   @test_reference joinpath(datadir, "seg-globe-1.png") viz(s)
   @test_reference joinpath(datadir, "seg-globe-2.png") viz(s, color="teal")
   @test_reference joinpath(datadir, "seg-globe-3.png") viz(s, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "seg-globe-4.png") viz(s, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "seg-globe-4.png") viz(
+    s,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 
   # 2D Rope (Cartesian)
   r = Rope(cart(0, 0), cart(10, 5), cart(10, 10), cart(20, 0))
   @test_reference joinpath(datadir, "rope-euclid2D-1.png") viz(r)
   @test_reference joinpath(datadir, "rope-euclid2D-2.png") viz(r, color="teal")
   @test_reference joinpath(datadir, "rope-euclid2D-3.png") viz(r, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "rope-euclid2D-4.png") viz(r, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "rope-euclid2D-4.png") viz(
+    r,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 
   # 2D Rope (LatLon)
   r = Rope(latlon(0, 0), latlon(5, 10), latlon(10, 10), latlon(0, 20))
   @test_reference joinpath(datadir, "rope-globe-1.png") viz(r)
   @test_reference joinpath(datadir, "rope-globe-2.png") viz(r, color="teal")
   @test_reference joinpath(datadir, "rope-globe-3.png") viz(r, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "rope-globe-4.png") viz(r, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+  @test_reference joinpath(datadir, "rope-globe-4.png") viz(
+    r,
+    color="teal",
+    segmentsize=10,
+    showpoints=true,
+    pointsize=20,
+    pointcolor="magenta"
+  )
 
   # 2D Ring (Cartesian)
   r = Ring(cart(0, 0), cart(10, 5), cart(10, 10), cart(20, 0))
@@ -235,8 +301,19 @@ end
   @test_reference joinpath(datadir, "tri-euclid2D-2.png") viz(t, color="teal")
   @test_reference joinpath(datadir, "tri-euclid2D-3.png") viz(t, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "tri-euclid2D-4.png") viz(t, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "tri-euclid2D-5.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "tri-euclid2D-6.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "tri-euclid2D-5.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "tri-euclid2D-6.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D Triangle (LatLon)
   t = Triangle(latlon(0, 0), latlon(0, 10), latlon(10, 0))
@@ -245,7 +322,13 @@ end
   @test_reference joinpath(datadir, "tri-globe-3.png") viz(t, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "tri-globe-4.png") viz(t, color="teal", showsegments=true)
   @test_reference joinpath(datadir, "tri-globe-5.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "tri-globe-6.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "tri-globe-6.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D Quadrangle (Cartesian)
   q = Quadrangle(cart(0, 0), cart(10, 0), cart(10, 10), cart(0, 10))
@@ -253,8 +336,19 @@ end
   @test_reference joinpath(datadir, "quad-euclid2D-2.png") viz(q, color="teal")
   @test_reference joinpath(datadir, "quad-euclid2D-3.png") viz(q, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "quad-euclid2D-4.png") viz(q, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "quad-euclid2D-5.png") viz(q, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "quad-euclid2D-6.png") viz(q, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "quad-euclid2D-5.png") viz(
+    q,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "quad-euclid2D-6.png") viz(
+    q,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D Quadrangle (LatLon)
   q = Quadrangle(latlon(0, 0), latlon(0, 10), latlon(10, 10), latlon(10, 0))
@@ -263,7 +357,13 @@ end
   @test_reference joinpath(datadir, "quad-globe-3.png") viz(q, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "quad-globe-4.png") viz(q, color="teal", showsegments=true)
   @test_reference joinpath(datadir, "quad-globe-5.png") viz(q, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "quad-globe-6.png") viz(q, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "quad-globe-6.png") viz(
+    q,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D PolyArea (Cartesian)
   o = [cart(0, 0), cart(10, 0), cart(10, 10), cart(0, 10)]
@@ -274,8 +374,19 @@ end
   @test_reference joinpath(datadir, "poly-euclid2D-2.png") viz(p, color="teal")
   @test_reference joinpath(datadir, "poly-euclid2D-3.png") viz(p, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "poly-euclid2D-4.png") viz(p, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "poly-euclid2D-5.png") viz(p, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "poly-euclid2D-6.png") viz(p, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "poly-euclid2D-5.png") viz(
+    p,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "poly-euclid2D-6.png") viz(
+    p,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D PolyArea (LatLon)
   o = [latlon(0, 0), latlon(0, 10), latlon(10, 10), latlon(10, 0)]
@@ -287,7 +398,13 @@ end
   @test_reference joinpath(datadir, "poly-globe-3.png") viz(p, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "poly-globe-4.png") viz(p, color="teal", showsegments=true)
   @test_reference joinpath(datadir, "poly-globe-5.png") viz(p, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "poly-globe-6.png") viz(p, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "poly-globe-6.png") viz(
+    p,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 3D Octagon (Cartesian)
   o = Octagon(
@@ -304,8 +421,19 @@ end
   @test_reference joinpath(datadir, "oct-euclid3D-2.png") viz(o, color="teal")
   @test_reference joinpath(datadir, "oct-euclid3D-3.png") viz(o, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "oct-euclid3D-4.png") viz(o, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "oct-euclid3D-5.png") viz(o, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "oct-euclid3D-6.png") viz(o, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "oct-euclid3D-5.png") viz(
+    o,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "oct-euclid3D-6.png") viz(
+    o,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 end
 
 @testitem "Multi" setup = [Setup] begin
@@ -317,8 +445,19 @@ end
   @test_reference joinpath(datadir, "multi-euclid2D-2.png") viz(m, color="teal")
   @test_reference joinpath(datadir, "multi-euclid2D-3.png") viz(m, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "multi-euclid2D-4.png") viz(m, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "multi-euclid2D-5.png") viz(m, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "multi-euclid2D-6.png") viz(m, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "multi-euclid2D-5.png") viz(
+    m,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "multi-euclid2D-6.png") viz(
+    m,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D Multi-Ngon (LatLon)
   t = Triangle(latlon(0, -10), latlon(0, 0), latlon(10, -10))
@@ -329,7 +468,13 @@ end
   @test_reference joinpath(datadir, "multi-globe-3.png") viz(m, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "multi-globe-4.png") viz(m, color="teal", showsegments=true)
   @test_reference joinpath(datadir, "multi-globe-5.png") viz(m, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "multi-globe-6.png") viz(m, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "multi-globe-6.png") viz(
+    m,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 end
 
 @testitem "Transformed" setup = [Setup] begin
@@ -340,8 +485,19 @@ end
   @test_reference joinpath(datadir, "transf-euclid2D-2.png") viz(t, color="teal")
   @test_reference joinpath(datadir, "transf-euclid2D-3.png") viz(t, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "transf-euclid2D-4.png") viz(t, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "transf-euclid2D-5.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "transf-euclid2D-6.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "transf-euclid2D-5.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "transf-euclid2D-6.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 
   # 2D Transformed-Box (LatLon)
   b = Box(latlon(0, 0), latlon(10, 10))
@@ -350,8 +506,19 @@ end
   @test_reference joinpath(datadir, "transf-globe-2.png") viz(t, color="teal")
   @test_reference joinpath(datadir, "transf-globe-3.png") viz(t, color="teal", alpha=0.5)
   @test_reference joinpath(datadir, "transf-globe-4.png") viz(t, color="teal", showsegments=true)
-  @test_reference joinpath(datadir, "transf-globe-5.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta")
-  @test_reference joinpath(datadir, "transf-globe-6.png") viz(t, color="teal", showsegments=true, segmentcolor="magenta", segmentsize=10)
+  @test_reference joinpath(datadir, "transf-globe-5.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta"
+  )
+  @test_reference joinpath(datadir, "transf-globe-6.png") viz(
+    t,
+    color="teal",
+    showsegments=true,
+    segmentcolor="magenta",
+    segmentsize=10
+  )
 end
 
 @testitem "GeometrySet" setup = [Setup] begin

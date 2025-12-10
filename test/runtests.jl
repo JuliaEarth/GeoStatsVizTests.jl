@@ -47,6 +47,38 @@ end
   @test_reference joinpath(datadir, "point-euclid3D-4.png") viz(p, color=1:10, pointsize=20)
 end
 
+@testitem "Ray/Vec" setup = [Setup] begin
+  rng = StableRNG(123)
+
+  # 2D Ray (Cartesian)
+  r = rand(rng, Ray, 10, crs=Cartesian2D)
+  @test_reference joinpath(datadir, "ray-euclid2D-1.png") viz(r)
+  @test_reference joinpath(datadir, "ray-euclid2D-2.png") viz(r, color="red")
+  @test_reference joinpath(datadir, "ray-euclid2D-3.png") viz(r, color=1:10)
+  @test_reference joinpath(datadir, "ray-euclid2D-4.png") viz(r, color=1:10, segmentsize=10)
+
+  # 3D Ray (Cartesian)
+  r = rand(rng, Ray, 10, crs=Cartesian3D)
+  @test_reference joinpath(datadir, "ray-euclid3D-1.png") viz(r)
+  @test_reference joinpath(datadir, "ray-euclid3D-2.png") viz(r, color="red")
+  @test_reference joinpath(datadir, "ray-euclid3D-3.png") viz(r, color=1:10)
+  @test_reference joinpath(datadir, "ray-euclid3D-4.png") viz(r, color=1:10, segmentsize=10)
+
+  # 2D Vec (Cartesian)
+  v = [Vec(cos(t), sin(t)) for t in range(0, 2π, length=10)]
+  @test_reference joinpath(datadir, "vec-euclid2D-1.png") viz(v)
+  @test_reference joinpath(datadir, "vec-euclid2D-2.png") viz(v, color="red")
+  @test_reference joinpath(datadir, "vec-euclid2D-3.png") viz(v, color=1:10)
+  @test_reference joinpath(datadir, "vec-euclid2D-4.png") viz(v, color=1:10, segmentsize=10)
+
+  # 3D Vec (Cartesian)
+  v = [Vec(cos(t), sin(t), 0) for t in range(0, 2π, length=10)]
+  @test_reference joinpath(datadir, "vec-euclid3D-1.png") viz(v)
+  @test_reference joinpath(datadir, "vec-euclid3D-2.png") viz(v, color="red")
+  @test_reference joinpath(datadir, "vec-euclid3D-3.png") viz(v, color=1:10)
+  @test_reference joinpath(datadir, "vec-euclid3D-4.png") viz(v, color=1:10, segmentsize=10)
+end
+
 @testitem "Curve" setup = [Setup] begin
   # 2D Bezier (Cartesian)
   b = BezierCurve(cart(0, 0), cart(10, 0), cart(10, 10))
@@ -81,6 +113,15 @@ end
   @test_reference joinpath(datadir, "curve-euclid3D-2.png") viz(c, color="red")
   @test_reference joinpath(datadir, "curve-euclid3D-3.png") viz(c, color="red", segmentsize=10)
   @test_reference joinpath(datadir, "curve-euclid3D-4.png") viz(c, color="red", segmentsize=10, showpoints=true, pointsize=20, pointcolor="cyan")
+end
+
+@testitem "Line" setup = [Setup] begin
+  # 2D Line (Cartesian)
+  # l = [Line((0, 0), (1, 0)), Line((0, 0), (1, 1)), Line((0, 0), (0, 1))]
+  # @test_reference joinpath(datadir, "line-euclid2D-1.png") viz(l)
+  # @test_reference joinpath(datadir, "line-euclid2D-2.png") viz(l, color="red")
+  # @test_reference joinpath(datadir, "line-euclid2D-3.png") viz(l, color=1:3)
+  # @test_reference joinpath(datadir, "line-euclid2D-4.png") viz(l, color=1:3, segmentsize=10)
 end
 
 @testitem "Box" setup = [Setup] begin

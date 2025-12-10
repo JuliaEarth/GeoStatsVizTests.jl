@@ -72,6 +72,42 @@ end
   @test_reference joinpath(datadir, "mesh2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
 end
 
+@testitem "Curve" setup = [Setup] begin
+  # 2D Bezier (Cartesian)
+  b = BezierCurve(cart(0, 0), cart(10, 0), cart(10, 10))
+  @test_reference joinpath(datadir, "bezier-euclid2D-1.png") viz(b)
+  @test_reference joinpath(datadir, "bezier-euclid2D-2.png") viz(b, color="teal")
+  @test_reference joinpath(datadir, "bezier-euclid2D-3.png") viz(b, color="teal", segmentsize=10)
+  @test_reference joinpath(datadir, "bezier-euclid2D-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+
+  # 2D Bezier (LatLon)
+  b = BezierCurve(latlon(0, 0), latlon(0, 10), latlon(10, 10))
+  @test_reference joinpath(datadir, "bezier-globe-1.png") viz(b)
+  @test_reference joinpath(datadir, "bezier-globe-2.png") viz(b, color="teal")
+  @test_reference joinpath(datadir, "bezier-globe-3.png") viz(b, color="teal", segmentsize=10)
+  @test_reference joinpath(datadir, "bezier-globe-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+
+  # 3D Bezier (Cartesian)
+  b = BezierCurve(cart(0, 0, 0), cart(10, 0, 0), cart(10, 20, 10))
+  @test_reference joinpath(datadir, "bezier-euclid3D-1.png") viz(b)
+  @test_reference joinpath(datadir, "bezier-euclid3D-2.png") viz(b, color="teal")
+  @test_reference joinpath(datadir, "bezier-euclid3D-3.png") viz(b, color="teal", segmentsize=10)
+  @test_reference joinpath(datadir, "bezier-euclid3D-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+
+  # 2D ParametrizedCurve (Cartesian)
+  c = ParametrizedCurve(t -> Point(cospi(2t), sinpi(2t)))
+  @test_reference joinpath(datadir, "curve-euclid2D-1.png") viz(c)
+  @test_reference joinpath(datadir, "curve-euclid2D-2.png") viz(c, color="teal")
+  @test_reference joinpath(datadir, "curve-euclid2D-3.png") viz(c, color="teal", segmentsize=10)
+
+  # 3D ParametrizedCurve (Cartesian)
+  c = ParametrizedCurve(t -> Point(cos(t), sin(t), 0.2t), (0, 4π))
+  @test_reference joinpath(datadir, "curve-euclid3D-1.png") viz(c)
+  @test_reference joinpath(datadir, "curve-euclid3D-2.png") viz(c, color="teal")
+  @test_reference joinpath(datadir, "curve-euclid3D-3.png") viz(c, color="teal", segmentsize=10)
+  @test_reference joinpath(datadir, "curve-euclid3D-4.png") viz(c, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
+end
+
 @testitem "Box" setup = [Setup] begin
   # 2D Box (Cartesian)
   b = Box(cart(0, 0), cart(10, 10))
@@ -96,29 +132,6 @@ end
   @test_reference joinpath(datadir, "box-euclid3D-1.png") viz(b)
   @test_reference joinpath(datadir, "box-euclid3D-2.png") viz(b, color="teal")
   @test_reference joinpath(datadir, "box-euclid3D-3.png") viz(b, color="teal", alpha=0.5)
-end
-
-@testitem "BezierCurve" setup = [Setup] begin
-  # 2D Bezier (Cartesian)
-  b = BezierCurve(cart(0, 0), cart(10, 0), cart(10, 10))
-  @test_reference joinpath(datadir, "bezier-euclid2D-1.png") viz(b)
-  @test_reference joinpath(datadir, "bezier-euclid2D-2.png") viz(b, color="teal")
-  @test_reference joinpath(datadir, "bezier-euclid2D-3.png") viz(b, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "bezier-euclid2D-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
-
-  # 2D Bezier (LatLon)
-  b = BezierCurve(latlon(0, 0), latlon(0, 10), latlon(10, 10))
-  @test_reference joinpath(datadir, "bezier-globe-1.png") viz(b)
-  @test_reference joinpath(datadir, "bezier-globe-2.png") viz(b, color="teal")
-  @test_reference joinpath(datadir, "bezier-globe-3.png") viz(b, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "bezier-globe-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
-
-  # 3D Bezier (Cartesian)
-  b = BezierCurve(cart(0, 0, 0), cart(10, 0, 0), cart(10, 20, 10))
-  @test_reference joinpath(datadir, "bezier-euclid3D-1.png") viz(b)
-  @test_reference joinpath(datadir, "bezier-euclid3D-2.png") viz(b, color="teal")
-  @test_reference joinpath(datadir, "bezier-euclid3D-3.png") viz(b, color="teal", segmentsize=10)
-  @test_reference joinpath(datadir, "bezier-euclid3D-4.png") viz(b, color="teal", segmentsize=10, showpoints=true, pointsize=20, pointcolor="magenta")
 end
 
 @testitem "Ball/Sphere" setup = [Setup] begin

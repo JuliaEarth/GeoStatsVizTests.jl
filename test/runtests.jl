@@ -356,7 +356,7 @@ end
 end
 
 @testitem "Grid" setup = [Setup] begin
-  # 2D Cartesian grid
+  # 2D CartesianGrid
   g = CartesianGrid(10, 10)
   @test_reference joinpath(datadir, "cartgrid2D-1.png") viz(g)
   @test_reference joinpath(datadir, "cartgrid2D-2.png") viz(g, showsegments=true)
@@ -371,7 +371,7 @@ end
   @test_reference joinpath(datadir, "cartgrid2D-11.png") viz(g, showsegments=true, segmentsize=5)
   @test_reference joinpath(datadir, "cartgrid2D-12.png") viz(g, showsegments=true, segmentcolor="red", segmentsize=5)
 
-  # 3D Cartesian grid
+  # 3D CartesianGrid
   g = CartesianGrid(10, 10, 10)
   @test_reference joinpath(datadir, "cartgrid3D-1.png") viz(g)
   @test_reference joinpath(datadir, "cartgrid3D-2.png") viz(g, showsegments=true)
@@ -388,21 +388,33 @@ end
 end
 
 @testitem "Mesh" setup = [Setup] begin
-  # 2D simple mesh
-  d = simplexify(CartesianGrid(10, 10))
-  ne = nelements(d)
-  @test_reference joinpath(datadir, "mesh2D-1.png") viz(d)
-  @test_reference joinpath(datadir, "mesh2D-2.png") viz(d, showsegments=true)
-  @test_reference joinpath(datadir, "mesh2D-3.png") viz(d, showsegments=true, segmentcolor=:red)
-  @test_reference joinpath(datadir, "mesh2D-4.png") viz(d, color=1:ne)
-  @test_reference joinpath(datadir, "mesh2D-5.png") viz(d, color=1:ne, colormap=:inferno)
-  @test_reference joinpath(datadir, "mesh2D-6.png") viz(d, color=:red)
-  @test_reference joinpath(datadir, "mesh2D-7.png") viz(d, color=:red, alpha=0.5)
-  @test_reference joinpath(datadir, "mesh2D-8.png") viz(d, color=1:ne, alpha=0.5)
-  @test_reference joinpath(datadir, "mesh2D-9.png") viz(d, color=1:ne, showsegments=true)
-  @test_reference joinpath(datadir, "mesh2D-10.png") viz(d, color=1:ne, showsegments=true, segmentcolor=:red)
-  @test_reference joinpath(datadir, "mesh2D-11.png") viz(d, showsegments=true, segmentsize=5)
-  @test_reference joinpath(datadir, "mesh2D-12.png") viz(d, showsegments=true, segmentcolor=:red, segmentsize=5)
+  # 2D SimpleMesh
+  g = CartesianGrid(10, 10)
+  m = simplexify(g)
+  ne = nelements(m)
+  @test_reference joinpath(datadir, "simplemesh2D-1.png") viz(m)
+  @test_reference joinpath(datadir, "simplemesh2D-2.png") viz(m, showsegments=true)
+  @test_reference joinpath(datadir, "simplemesh2D-3.png") viz(m, showsegments=true, segmentcolor="red")
+  @test_reference joinpath(datadir, "simplemesh2D-4.png") viz(m, color=1:ne)
+  @test_reference joinpath(datadir, "simplemesh2D-5.png") viz(m, color=1:ne, colormap="inferno")
+  @test_reference joinpath(datadir, "simplemesh2D-6.png") viz(m, color="red")
+  @test_reference joinpath(datadir, "simplemesh2D-7.png") viz(m, color="red", alpha=0.5)
+  @test_reference joinpath(datadir, "simplemesh2D-8.png") viz(m, color=1:ne, alpha=0.5)
+  @test_reference joinpath(datadir, "simplemesh2D-9.png") viz(m, color=1:ne, showsegments=true)
+  @test_reference joinpath(datadir, "simplemesh2D-10.png") viz(m, color=1:ne, showsegments=true, segmentcolor="red")
+  @test_reference joinpath(datadir, "simplemesh2D-11.png") viz(m, showsegments=true, segmentsize=5)
+  @test_reference joinpath(datadir, "simplemesh2D-12.png") viz(m, showsegments=true, segmentcolor="red", segmentsize=5)
+
+  # 3D SimpleMesh
+  g = CartesianGrid(10, 10, 10)
+  m = simplexify(g)
+  ne = nelements(m)
+  @test_reference joinpath(datadir, "simplemesh3D-1.png") viz(m)
+  @test_reference joinpath(datadir, "simplemesh3D-2.png") viz(m, color=1:ne)
+  @test_reference joinpath(datadir, "simplemesh3D-3.png") viz(m, color=1:ne, colormap="inferno")
+  @test_reference joinpath(datadir, "simplemesh3D-4.png") viz(m, color="red")
+  @test_reference joinpath(datadir, "simplemesh3D-5.png") viz(m, color="red", alpha=0.5)
+  @test_reference joinpath(datadir, "simplemesh3D-6.png") viz(m, color=1:ne, alpha=0.5)
 end
 
 @testitem "Surface/Volume" setup = [Setup] begin

@@ -117,11 +117,11 @@ end
 
 @testitem "Line" setup = [Setup] begin
   # 2D Line (Cartesian)
-  # l = [Line((0, 0), (1, 0)), Line((0, 0), (1, 1)), Line((0, 0), (0, 1))]
-  # @test_reference joinpath(datadir, "line-euclid2D-1.png") viz(l)
-  # @test_reference joinpath(datadir, "line-euclid2D-2.png") viz(l, color="red")
-  # @test_reference joinpath(datadir, "line-euclid2D-3.png") viz(l, color=1:3)
-  # @test_reference joinpath(datadir, "line-euclid2D-4.png") viz(l, color=1:3, segmentsize=10)
+  l = [Line((0, 0), (1, 0)), Line((0, 0), (1, 1)), Line((0, 0), (0, 1))]
+  @test_reference joinpath(datadir, "line-euclid2D-1.png") viz(l)
+  @test_reference joinpath(datadir, "line-euclid2D-2.png") viz(l, color="red")
+  @test_reference joinpath(datadir, "line-euclid2D-3.png") viz(l, color=1:3)
+  @test_reference joinpath(datadir, "line-euclid2D-4.png") viz(l, color=1:3, segmentsize=10)
 end
 
 @testitem "Box" setup = [Setup] begin

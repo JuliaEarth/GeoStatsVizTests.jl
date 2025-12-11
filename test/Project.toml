@@ -14,7 +14,8 @@ TestItems = "1c621080-faea-4a02-84b6-bbd5e436b8fe"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [sources]
+GeoTables = {rev = "master", url = "https://github.com/JuliaEarth/GeoTables.jl.git"}
 Meshes = {rev = "master", url = "https://github.com/JuliaGeometry/Meshes.jl.git"}
 
 [compat]
-CairoMakie = "=0.15.7"
+CairoMakie = "=0.15.8"
